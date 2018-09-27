@@ -16,6 +16,8 @@ namespace Decryption
 
         // 3. Maybe needed to refactor code
 
+        // 4. Write Vinegere Decryption
+
         static void Main(string[] args)
         {
             string task1 = @"]|d3gaj3r3avcvrgz}t>xvj3K\A3pzc{va=3V=t=3zg3`{|f.w3grxv3r3`gaz}t31{v..|3d|a.w13r" +
@@ -36,11 +38,25 @@ namespace Decryption
                 "186b440e275f456b710e2a414b225d4b265a052f1f4b3f5b0e395689cbaa186b5d046b401b2a500e381d61";
 
             CeasarDecrypt ceasarDecrypt = new CeasarDecrypt(task1);
-            ceasarDecrypt.Decrypt();
+            //ceasarDecrypt.Decrypt();
+
+            string result1 = DecodeHexToUTF8(task2);
+
+            // finding index of coidence
+
+            for (int i = 1; i < 50; i++)
+            {
+                LetterCounter lc = new LetterCounter(result1, i);
+                Console.WriteLine(i + " length " + lc.IndexOfCoidence());
+                //lc.Show();
+            }
+
+            // length maybe 3? or 6?
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
+
 
         public static string DecodeHexToUTF8(string task)
         {
