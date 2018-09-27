@@ -55,7 +55,7 @@ namespace Decryption
             }
         }
 
-        public double IndexOfCoidence()
+        public double IndexOfConcidence()
         {
             double result = 0;
             foreach (Node node in list)
