@@ -13,23 +13,23 @@ namespace Decryption
 
         //key 19
 
-        public void Decrypt()
+        public string Decrypt()
         {
             string result = string.Empty;
 
             for (int j = 0; j < 256; j++)
             {
-                result = string.Empty;
+                string text = string.Empty;
 
                 foreach (char c in source)
                 {
-                    result += (char)(c ^ j);
+                    text += (char)(c ^ j);
                 }
 
                 int letterCount = 0;
                 int spaceCount = 0;
 
-                foreach (char c in result)
+                foreach (char c in text)
                 {
                     if (Char.IsLetter(c) || c == '=')
                         letterCount++;
@@ -37,13 +37,15 @@ namespace Decryption
                         spaceCount++;
                 }
 
-                if ((((double)letterCount / result.Length) > 0.7) 
-                    && (((double)spaceCount / result.Length) > 0.12) 
-                    && (((double)(letterCount + spaceCount) / result.Length) > 0.9))
+                if ((((double)letterCount / text.Length) > 0.7) 
+                    && (((double)spaceCount / text.Length) > 0.12) 
+                    && (((double)(letterCount + spaceCount) / text.Length) > 0.9))
                 {
-                    Console.WriteLine("key: " + (char)j + "\nresult string:\n" + result);
-                }
+                    result += "key: " + (char)j + "\nresult string:\n" + text;
+                    break;
+                }        
             }
+            return result;
         }
     }
 }
