@@ -48,7 +48,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubstitutionDecript\Chromosome.cs" />
+    <Compile Include="SubstitutionDecript\CipherFitness.cs" />
+    <Compile Include="SubstitutionDecript\DictionaryStatisticsHelper.cs" />
     <Compile Include="SubstitutionDecript\GeneticModel.cs" />
+    <Compile Include="SubstitutionDecript\LanguageStatisticsHelper.cs" />
     <Compile Include="SubstitutionDecript\NGramFrequency.cs" />
     <Compile Include="SubstitutionDecript\SubstitutionDecrypt.cs" />
     <Compile Include="VigenereDecrypt.cs" />

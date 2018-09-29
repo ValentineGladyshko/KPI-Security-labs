@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Decryption.SubstitutionDecript;
 
 namespace Decryption
 {
@@ -68,7 +69,8 @@ namespace Decryption
             Console.WriteLine(result2);
             WriteToFile("result2.txt", result2);
             #endregion
-
+            CipherFitness cipherFitness = new CipherFitness();
+            Console.WriteLine(cipherFitness.Evaluate(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt")));
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
