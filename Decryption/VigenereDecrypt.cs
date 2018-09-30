@@ -74,7 +74,6 @@ namespace Decryption
                         && (((double)spaceCount / result.Length) > 0.12)
                         && (((double)(letterCount + spaceCount) / result.Length) > 0.95))
                     {
-                        //Console.WriteLine(i + "  " + j);
                         key[i] = j;
                         break;
                     }

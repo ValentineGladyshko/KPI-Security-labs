@@ -45,7 +45,6 @@ namespace Decryption
 
             CeasarDecrypt ceasarDecrypt = new CeasarDecrypt(ReadFromFile("task1.txt"));
             string result1 = ceasarDecrypt.Decrypt();
-            Console.WriteLine(result1);
             WriteToFile("result1.txt", result1);
             #endregion
 
@@ -66,7 +65,6 @@ namespace Decryption
 
             VigenereDecrypt vigenereDecrypt = new VigenereDecrypt(DecodeHexToUTF8(ReadFromFile("task2.txt")), null);
             string result2 = vigenereDecrypt.Decrypt();
-            Console.WriteLine(result2);
             WriteToFile("result2.txt", result2);
             #endregion
             CipherFitness cipherFitness = new CipherFitness();
@@ -78,7 +76,7 @@ namespace Decryption
         public static string ReadFromFile(string filepath)
         {
             string result = string.Empty;
-            
+
             try
             {
                 using (StreamReader sr = new StreamReader(filepath))
@@ -90,7 +88,7 @@ namespace Decryption
             {
                 Console.WriteLine(e.Message);
             }
-            
+
             return result;
         }
 
@@ -101,17 +99,17 @@ namespace Decryption
                 sw.Write(result);
             }
         }
-    
+
 
         public static string DecodeHexToUTF8(string task)
         {
             string result = string.Empty;
             for (int i = 0; i < task.Length; i += 2)
-            {              
+            {
                 result += (char)int.Parse(task.Substring(i, 2), System.Globalization.NumberStyles.HexNumber);
             }
             return result;
         }
     }
-    
+
 }
