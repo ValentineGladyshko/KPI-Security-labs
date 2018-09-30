@@ -22,28 +22,28 @@ namespace Decryption
         private int FindKeyLength()
         {
             int maxIndex = -1;
-            double indexOfCoidence = -1;
+            double indexOfConcidence = -1;
             double curIndex;
 
             for (int i = 1; i < 50; i++)
             {
                 LetterCounter letterCounter = new LetterCounter(source, i);
                 curIndex = letterCounter.IndexOfConcidence();
-                if (curIndex > indexOfCoidence)
+                if (curIndex > indexOfConcidence)
                 {
-                    if(curIndex/indexOfCoidence>1.4)
+                    if(curIndex/ indexOfConcidence > 1.4)
                     {
                         maxIndex = i;
                         return maxIndex;
                     }
-                    indexOfCoidence = letterCounter.IndexOfConcidence();
+                    indexOfConcidence = letterCounter.IndexOfConcidence();
                     maxIndex = i;
                 }
             }
             return maxIndex;
         }
 
-        public void Decrypt()
+        public string Decrypt()
         {
             key = new int[keyLength];
             string result = string.Empty;
@@ -82,6 +82,13 @@ namespace Decryption
 
             result = string.Empty;
 
+            result += "key: ";
+            for (int i = 0; i < keyLength; i++)
+            {
+                result += Convert.ToChar(key[i]);
+            }
+
+            result += "\nresult string:\n";
             for (int i = 0; i < source.Length - keyLength + 1; i += keyLength)
             {
                 for (int j = 0; j < keyLength; j++)
@@ -89,13 +96,8 @@ namespace Decryption
                     result += Convert.ToChar(source[i + j] ^ key[j]);
                 }
             }
-            Console.Write("key: ");
-            for (int i = 0; i < keyLength; i++)
-            {
-                Console.Write(Convert.ToChar(key[i]));
-            }
-            Console.WriteLine("\nresult string:\n" + result);
 
+            return result;
         }
     }
 }

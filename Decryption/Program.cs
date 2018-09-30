@@ -45,7 +45,6 @@ namespace Decryption
 
             CeasarDecrypt ceasarDecrypt = new CeasarDecrypt(ReadFromFile("task1.txt"));
             string result1 = ceasarDecrypt.Decrypt();
-            //Console.WriteLine(result1);
             WriteToFile("result1.txt", result1);
             #endregion
 
@@ -66,7 +65,6 @@ namespace Decryption
 
             VigenereDecrypt vigenereDecrypt = new VigenereDecrypt(DecodeHexToUTF8(ReadFromFile("task2.txt")), null);
             string result2 = vigenereDecrypt.Decrypt();
-            //Console.WriteLine(result2);
             WriteToFile("result2.txt", result2);
             #endregion
             CipherFitness cipherFitness = new CipherFitness();
