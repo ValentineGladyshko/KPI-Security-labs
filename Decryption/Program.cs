@@ -63,12 +63,20 @@ namespace Decryption
 
             //WriteToFile("task2.txt", task2);
 
+           
+
             VigenereDecrypt vigenereDecrypt = new VigenereDecrypt(DecodeHexToUTF8(ReadFromFile("task2.txt")), null);
             string result2 = vigenereDecrypt.Decrypt();
             WriteToFile("result2.txt", result2);
             #endregion
-            CipherFitness cipherFitness = new CipherFitness();
-            Console.WriteLine(cipherFitness.Evaluate(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt")));
+            
+
+            string task3 = "EFFPQLEKVTVPCPYFLMVHQLUEWCNVWFYGHYTCETHQEKLPVMSAKSPVPAPVYWMVHQLUSPQLYWLASLFVWPQLMVHQLUPLRPSQLULQESPBLWPCSVRVWFLHLWFLWPUEWFYOTCMQYSLWOYWYETHQEKLPVMSAKSPVPAPVYWHEPPLUWSGYULEMQTLPPLUGUYOLWDTVSQETHQEKLPVPVSMTLEUPQEPCYAMEWWYOYULULTCYWPQLSEOLSVOHTLUYAPVWLYGDALSSVWDPQLNLCKCLRQEASPVILSLEUMQBQVMQCYAHUYKEKTCASLFPYFLMVHQLUPQVSHEUEDUEHQBVTTPQLVWFLRYGMYVWMVFLWMLSPVTTBYUNESESADDLSPVYWCYAMEWPUCPYFVIVFLPQLOLSSEDLVWHEUPSKCPQLWAOKLUYGMQEUEMPLUSVWENLCEWFEHHTCGULXALWMCEWETCSVSPYLEMQYGPQLOMEWCYAGVWFEBECPYASLQVDQLUYUFLUGULXALWMCSPEPVSPVMSBVPQPQVSPCHLYGMVHQLUPQLWLRPHEUEDUEHQMYWPEVWSSYOLHULPPCVWPLULSPVWDVWGYUOEPVYWEKYAPSYOLEFFVPVYWETULBEUF";
+            
+
+            SimpleSubstitutionDecrypt decryptor1 = new SimpleSubstitutionDecrypt(task3);
+            Console.WriteLine(decryptor1.Decrypt());
+
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }

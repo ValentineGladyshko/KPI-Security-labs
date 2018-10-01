@@ -47,17 +47,19 @@
     <Compile Include="LetterCounter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubstitutionDecript\Chromosome.cs" />
+    <Compile Include="SimpleSubstitutionDecrypt.cs" />
     <Compile Include="SubstitutionDecript\CipherFitness.cs" />
     <Compile Include="SubstitutionDecript\DictionaryStatisticsHelper.cs" />
-    <Compile Include="SubstitutionDecript\GeneticModel.cs" />
     <Compile Include="SubstitutionDecript\LanguageStatisticsHelper.cs" />
-    <Compile Include="SubstitutionDecript\NGramFrequency.cs" />
-    <Compile Include="SubstitutionDecript\SubstitutionDecrypt.cs" />
     <Compile Include="VigenereDecrypt.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SubstitutionDecript\english_quadgrams.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
