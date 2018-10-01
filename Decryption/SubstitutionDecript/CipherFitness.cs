@@ -2,15 +2,15 @@
 
 namespace Decryption.SubstitutionDecript
 {
-    class CipherFitness
+    public class CipherFitness
     {
         public double Evaluate(string decryptedText)
         {
             decryptedText = decryptedText.ToUpper();
             double langStat = languageStatisticFitness(decryptedText);
             double dictStat = dictionaryStatisticFitness(decryptedText);
-            Console.WriteLine(0.00001 / langStat);
-            Console.WriteLine(dictStat);
+            //Console.WriteLine(0.00001 / langStat);
+            //Console.WriteLine(dictStat);
             return 0.00001/langStat + dictStat;
         }
 
