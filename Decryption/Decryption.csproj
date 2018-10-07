@@ -59,6 +59,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SubstitutionDecript\english_bigrams.txt" />
     <Content Include="SubstitutionDecript\english_quadgrams.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

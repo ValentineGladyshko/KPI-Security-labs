@@ -10,7 +10,10 @@ namespace Decryption
     public class SimpleSubstitutionDecrypt
     {
         public string source;
-        public static Dictionary<string, double> initedQuads;
+        public static Dictionary<string, double> trigrams;
+        public static Dictionary<string, double> bigrams;
+        public static IEnumerable<char> startDic;
+        public static bool recalculated = false;
 
         public SimpleSubstitutionDecrypt(string source)
         {
@@ -19,11 +22,13 @@ namespace Decryption
 
         public string Decrypt()
         {
-            initedQuads = GetTrigrams();
+            trigrams = GetTrigrams();
+            bigrams = GetBigrams();
+            startDic = GetAmount(source).OrderBy(x => x.Value).Select(x => x.Key);
 
             var result = TransformByHillСlimbing(source);
-
-
+            Console.WriteLine(result);
+            Console.ReadKey();
             return result;
         }
 
@@ -46,17 +51,6 @@ namespace Decryption
             return result;
         }
 
-        public static Dictionary<int, char> GetDefaultABC()
-        {
-            Dictionary<int, char> abc = new Dictionary<int, char>();
-            abc.Add(1, 'e');
-            abc.Add(2, 't');
-            abc.Add(3, 'a');
-            abc.Add(4, 'i');
-
-            return abc;
-        }
-
         public static string TransformByHillСlimbing(string text)
         {
             double coef = 0;
@@ -66,13 +60,38 @@ namespace Decryption
             double bestKeyCoef = 0;
             int keyCounter = 0;
             int exiter = 0;
+            int exiter2 = 0;
             string temp = null;
+            int stage = 1;
 
-            while (exiter < 75/*coef < 4450*/)
+            while (exiter < 25)
             {
                 temp = TransformByFrequency(text, tempKey);
 
-                var tempCoef = GetCoefficient(temp);
+                Console.SetCursorPosition(0, 0);
+                Console.WriteLine(temp);
+                Console.WriteLine("Coef    : " + coef + "             ");
+                Console.WriteLine("Exiter  : " + exiter + "           ");
+                if (stage == 1)
+                {
+                    Console.WriteLine("Stage   : " + stage + "           ");
+                    Console.WriteLine("Exiter2 : " + exiter2 + "           ");
+                }
+                else if (!recalculated)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Bigram stage Done");
+                    Console.ResetColor();
+                }
+
+                if (exiter2 >= 700)
+                {
+                    stage = 2;
+                    exiter = 0;
+                    coef = GetCoefficient(temp, stage);
+                    exiter2 = 0;
+                }
+                var tempCoef = GetCoefficient(temp, stage);
 
                 if (coef < tempCoef)
                 {
@@ -81,34 +100,22 @@ namespace Decryption
                         bestKey = tempKey;
                         bestKeyCoef = tempCoef;
                     }
-
-                    if (keyCounter >= 26)
+                    if (keyCounter >= 100)
                     {
                         key = tempKey;
                         coef = tempCoef;
                         exiter = 0;
-                        Console.WriteLine(coef);
+                        exiter2 = 0;
+                        //Console.WriteLine(coef);
                         keyCounter = 0;
                     }
                 }
                 else if (coef == tempCoef)
                 {
-                    exiter++;
-
-                    if (exiter == 50)
-                    {
-                        Console.WriteLine(exiter);
-                    }
-
-                    if (exiter == 100)
-                    {
-                        Console.WriteLine(exiter);
-                    }
-
-                    if (exiter == 250)
-                    {
-                        Console.WriteLine(exiter);
-                    }
+                    if (stage == 2)
+                        exiter++;
+                    else
+                        exiter2++;
                 }
 
                 tempKey = ChangeKey(key);
@@ -118,12 +125,18 @@ namespace Decryption
             return temp;
         }
 
-        public static double GetCoefficient(string text)
+        public static double GetCoefficient(string text, int stage)
         {
             text = text.ToUpper();
             //переробити на правильне
             double res = 0;
-            var trigs = initedQuads/*GetTrigrams()*/;
+
+            var trigs = trigrams/*GetTrigrams()*/;
+
+            if (stage == 1)
+                trigs = bigrams;
+            else
+                trigs = trigrams;
 
             foreach (var tg in trigs)
             {
@@ -146,6 +159,33 @@ namespace Decryption
             list[second] = temp;
 
             return list;
+        }
+
+        public static Dictionary<string, double> GetBigrams()
+        {
+            string t = null;
+            using (FileStream fstream = File.OpenRead(@"../../../Decryption/SubstitutionDecript/english_bigrams.txt"))
+            {
+                // преобразуем строку в байты
+                byte[] array = new byte[fstream.Length];
+                // считываем данные
+                fstream.Read(array, 0, array.Length);
+                // декодируем байты в строку
+                t = System.Text.Encoding.Default.GetString(array);
+            }
+
+            var quadgrams = t.Split('\n');
+
+            var result = new Dictionary<string, double>();
+
+            foreach (var item in quadgrams)
+            {
+                var i = item.Split(' ');
+
+                result.Add(i[0], Convert.ToDouble(i[1]));
+            }
+
+            return result;
         }
 
         public static Dictionary<string, double> GetTrigrams()
@@ -173,42 +213,9 @@ namespace Decryption
                 var i = item.Split(' ');
 
                 result.Add(i[0], Convert.ToDouble(i[1]));
-                //if (item.Count() == 4)
-                //{
-                //    result.Add(item, 13168375);
-                //}
-                //else
-                //{
-                //    tempT = item.Skip(item.Length - 4).ToString();
-                //    result.Add(tempT, tempDouble);
-                //    tempDouble = Convert.ToDouble(item.Remove(item.Length - 4));
-                //}
             }
 
-            //result.Add("TION", 13168375);
-            //result.Add("NTHE", 11234972);
-            //result.Add("THER", 10218035);
-            //result.Add("THAT", 8980536);
-            //result.Add("OFTH", 8132597);
-
             return result;
-
-            //return new List<string>()
-            //{
-            //    //"the", "and", "ing", "her", "tha", "ere",
-            //    //"hat", "eth", "ent", "nth", "for", "his",
-            //    //"thi", "ter", "int", "dth", "you", "all",
-            //    //"hes", "ion", "ith", "oth", "est", "tth",
-            //    //"oft", "ver", "sth", "ers", "fth", "rea"
-            //    "add", "the", "ability", "abi", "ili", "ity", "lity", "to", "decipher", "dec", "deci",
-            //    "cip", "ciph", "eci", "ecip", "decip", "deciph", "pher", "ecipher", "any", "kind", "ind", "nd", "kin",
-            //    "of", "poly", "tic", "etic", "betic", "alp", "alph", "phab",
-            //    "polyalphabetic", "substitution", "ciphers", "one", "used", "in",
-            //    "cipher", "texts", "here", "has", "independent", "randomly", "chosen",
-            //    "monoalphabetic", "substitution", "patterns",
-            //    "foreach", "letter", "from", "english", "alphabet", "it", "is", "clear", "that", "you", "can", "no",
-            //    "more"
-            //};
         }
 
         public static IEnumerable<char> GenerateRandomKey()
@@ -232,46 +239,13 @@ namespace Decryption
                     data[j] = list[i];
                 }
             }
-
             return data;
-        }
-
-        public static string TransformByFrequency(string text)
-        {
-            var abc = GetDefaultABC();
-
-            var startDic = GetAmount(text);
-
-            var abcByFreaquency = abc.OrderBy(x => x.Key).Select(x => x.Value);
-            var textABCFreaquency = startDic.OrderBy(x => x.Value).Select(x => x.Key);
-
-            //var testForBP = startDic.OrderByDescending(x => x.Value);
-
-            Stack<char> stack = new Stack<char>();
-
-            foreach (var i in textABCFreaquency)
-            {
-                stack.Push(i);
-            }
-
-            foreach (var l in abcByFreaquency)
-            {
-                text = text.Replace(stack.Pop(), l);
-            }
-
-            return text;
         }
 
         public static string TransformByFrequency(string text, IEnumerable<char> key)
         {
-            var abc = GetDefaultABC();
-
-            var startDic = GetAmount(text);
-
             var abcByFreaquency = key;/* abc.OrderBy(x => x.Key).Select(x => x.Value);*/
-            var textABCFreaquency = startDic.OrderBy(x => x.Value).Select(x => x.Key);
-
-            //var testForBP = startDic.OrderByDescending(x => x.Value);
+            var textABCFreaquency = startDic;
 
             Stack<char> stack = new Stack<char>();
 
