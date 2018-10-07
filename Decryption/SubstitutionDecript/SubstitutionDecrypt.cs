@@ -8,26 +8,28 @@ namespace Decryption.SubstitutionDecript
 {
     public class SubstitutionDecrypt
     {
-        public String source;
+        private readonly char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
+        public string key;
+        public Dictionary<char, char> dictionary;
 
-        public SubstitutionDecrypt(String source)
+        public SubstitutionDecrypt(string key)
         {
-            this.source = source;
+            dictionary = new Dictionary<char, char>();
+            this.key = key;
+            for (int i = 0; i < alphabet.Length; i++) 
+            {
+                dictionary.Add(key[i], alphabet[i]);
+            }
         }
 
-        public string DecryptText(String key)
+        public string DecryptText(string source)
         {
             string decryptedText = "";
-            Dictionary<char, int> indexInKey = new Dictionary<char, int>();
-            for (int i = 0; i < key.Length; i++)
-            {
-                indexInKey[key[i]] = i;
-            }
             foreach (char c in source)
             {
                 if (Char.IsLetter(c))
                 {
-                    decryptedText += (char)('A' + indexInKey[c]);
+                    decryptedText += dictionary[c];
                 }
                 else
                 {

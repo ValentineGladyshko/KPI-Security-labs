@@ -47,9 +47,10 @@
     <Compile Include="LetterCounter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubstitutionDecript\Chromosome.cs" />
     <Compile Include="SubstitutionDecript\CipherFitness.cs" />
+    <Compile Include="SubstitutionDecript\DictionaryNGrams.cs" />
     <Compile Include="SubstitutionDecript\DictionaryStatisticsHelper.cs" />
+    <Compile Include="SubstitutionDecript\Gen.cs" />
     <Compile Include="SubstitutionDecript\GeneticModel.cs" />
     <Compile Include="SubstitutionDecript\LanguageStatisticsHelper.cs" />
     <Compile Include="SubstitutionDecript\NGramFrequency.cs" />
