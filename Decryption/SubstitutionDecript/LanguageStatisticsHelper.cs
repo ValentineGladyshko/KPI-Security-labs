@@ -59,7 +59,7 @@ namespace Decryption.SubstitutionDecript
 
         public IDictionary<string,double> CreateBiGramStatistic(string text)
         {
-            double _len = Convert.ToDouble(text.Count())/2;
+            double _len = 0.0;
 
             ConcurrentDictionary<string, double> biGramDict = new ConcurrentDictionary<string, double>();
 
@@ -70,13 +70,14 @@ namespace Decryption.SubstitutionDecript
                 char[] currBlock = { prev, curr };
                 string key = new string(currBlock);
                 biGramDict.AddOrUpdate(key, 1, (id, count) => count + 1);
+                _len++;
             }
             return biGramDict.ToDictionary(x => x.Key, x => x.Value / _len);
         }
 
         public IDictionary<string,double> CreateTriGramStatistic(string text)
         {
-            double _len = Convert.ToDouble(text.Count())/3;
+            double _len = 0.0;
 
             ConcurrentDictionary<string, double> triGramDict = new ConcurrentDictionary<string, double>();
 
@@ -88,6 +89,7 @@ namespace Decryption.SubstitutionDecript
                 char[] currBlock = { prevprev, prev, curr };
                 string key = new string(currBlock);
                 triGramDict.AddOrUpdate(key, 1, (id, count) => count + 1);
+                _len++;
             }
             return triGramDict.ToDictionary(x => x.Key, x => x.Value / _len);
         }

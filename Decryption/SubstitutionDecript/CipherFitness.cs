@@ -13,11 +13,11 @@ namespace Decryption.SubstitutionDecript
             decryptedText = decryptedText.ToLower();
             double langStat = languageStatisticFitness(decryptedText);
             double dictStat = dictionaryStatisticFitness(decryptedText);
-            if ((0.00003 / langStat) < 500.0)
+            if ((30 / langStat) < 1200.0)
             {
-                return 0.00003 / langStat;
+                return 30 / langStat;
             }
-            return 0.00003 / langStat + dictStat;
+            return 30 / langStat + dictStat;
         }
 
         public static void Show(string decryptedText)
@@ -26,15 +26,15 @@ namespace Decryption.SubstitutionDecript
             double langStat = languageStatisticFitness(decryptedText);
             double dictStat = dictionaryStatisticFitness(decryptedText);
             double stat = 0.0;
-            if ((0.00003 / langStat) < 500.0)
+            if ((30 / langStat) < 1200.0)
             {
-                stat = 0.00003 / langStat;
+                stat = 30 / langStat;
             }
             else
             {
-                stat = 0.00003 / langStat + dictStat;
+                stat = 30 / langStat + dictStat;
             }
-            Console.WriteLine("sum: " + stat + " lang: " + (0.00003 / langStat) + " dict: " + dictStat);
+            Console.WriteLine("sum: " + stat + " lang: " + (30 / langStat) + " dict: " + dictStat);
         }
         //public static double Fitness(string decryptedText)
         //{
@@ -133,7 +133,7 @@ namespace Decryption.SubstitutionDecript
                 nativUD.TryGetValue(c, out cNativ);
                 cipherUD.TryGetValue(c, out cCipher);
 
-                uniGramProb += Math.Pow(Math.Abs(cNativ - cCipher), 6);
+                uniGramProb += Math.Pow(Math.Abs(cNativ - cCipher), 2);
 
                 //bigram 
                 for (char c1 = 'a'; c1 <= 'z'; c1++)
@@ -145,7 +145,7 @@ namespace Decryption.SubstitutionDecript
                     nativBD.TryGetValue(blockS, out cNativA);
                     cipherBD.TryGetValue(blockS, out cCipherA);
                     
-                    biGramProb += Math.Pow(Math.Abs(cNativA - cCipherA), 6);
+                    biGramProb += Math.Pow(Math.Abs(cNativA - cCipherA), 2);
 
                     //trigram
                     for (char c2 = 'a'; c2 <= 'z'; c2++)
@@ -157,7 +157,7 @@ namespace Decryption.SubstitutionDecript
                         nativTD.TryGetValue(blockF, out cNativB);
                         cipherTD.TryGetValue(blockF, out cCipherB);
                         
-                        triGramProb += Math.Pow(Math.Abs(cNativB - cCipherB), 6);
+                        triGramProb += Math.Pow(Math.Abs(cNativB - cCipherB), 2);
                     }
                 }
             }
@@ -181,7 +181,7 @@ namespace Decryption.SubstitutionDecript
                 }
             }
 
-            return 100.0 * score / length;
+            return 200.0 * score / length;
         }
     }
 }

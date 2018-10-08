@@ -92,7 +92,7 @@ namespace Decryption
             GeneticModel gm = new GeneticModel(encryptedText);
             string fd = gm.Run();
             CipherFitness.Show(fd);
-            Console.WriteLine(fd);
+            Console.WriteLine("\n==================\n"+fd);
             thread.Join();
             thread1.Join();
             Console.WriteLine("Press any key to continue...");
@@ -107,7 +107,7 @@ namespace Decryption
             GeneticModel gm = new GeneticModel(encryptedText);
             string fd = gm.Run();
             CipherFitness.Show(fd);
-            Console.WriteLine(fd);
+            Console.WriteLine("\n==================\n" + fd);
         }
 
         public static string ReadFromFile(string filepath)

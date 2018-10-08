@@ -44,6 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CeasarDecrypt.cs" />
+    <Compile Include="Decrypt4Task\Gen4.cs" />
+    <Compile Include="Decrypt4Task\GeneticModel4.cs" />
+    <Compile Include="Decrypt4Task\SubstitutionDecrypt4.cs" />
     <Compile Include="LetterCounter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -60,5 +63,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

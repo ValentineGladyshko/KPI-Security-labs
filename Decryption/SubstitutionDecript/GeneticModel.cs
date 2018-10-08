@@ -13,7 +13,7 @@ namespace Decryption.SubstitutionDecript
         private readonly char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
         private string encryptedText;
         private SortedSet<Gen> population;
-        private int generationCount = 500;
+        private int generationCount = 300;
         private int populationCount = 50;
         private double[] maxScore;
         //private double probabilityOfCrossover = 0.65;
@@ -97,11 +97,11 @@ namespace Decryption.SubstitutionDecript
                 //    numberOfCrossoverPoints = 3;
                 //    probabilityOfCrossover = 0.5;
                 //}
-                if (maxRate > 5500.0)
-                {
-                    Console.WriteLine(new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText));
-                    //Console.WriteLine(sd.DecryptText(encryptedText));
-                }
+                //if (maxRate > 7500.0)
+                //{
+                //    Console.WriteLine(new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText));
+                //    //Console.WriteLine(sd.DecryptText(encryptedText));
+                //}
                 Console.WriteLine("generation: " + currentGeneration + " max rate: " + maxRate + " avg rate: " +
                 (sumRate / populationCount) + " gen: " + population.First().Chromosome);
                 // population[0].Show(encryptedText);
