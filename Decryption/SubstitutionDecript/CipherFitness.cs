@@ -18,6 +18,7 @@ namespace Decryption.SubstitutionDecript
                 return 30 / langStat;
             }
             return 30 / langStat + dictStat;
+            //return langStat + dictStat;
         }
 
         public static void Show(string decryptedText)
@@ -25,6 +26,8 @@ namespace Decryption.SubstitutionDecript
             decryptedText = decryptedText.ToLower();
             double langStat = languageStatisticFitness(decryptedText);
             double dictStat = dictionaryStatisticFitness(decryptedText);
+            //Console.WriteLine("lang: " + langStat+ " dict: " + +dictStat);
+
             double stat = 0.0;
             if ((30 / langStat) < 1200.0)
             {
@@ -144,7 +147,7 @@ namespace Decryption.SubstitutionDecript
                     string blockS = new string(blockC);
                     nativBD.TryGetValue(blockS, out cNativA);
                     cipherBD.TryGetValue(blockS, out cCipherA);
-                    
+
                     biGramProb += Math.Pow(Math.Abs(cNativA - cCipherA), 2);
 
                     //trigram
@@ -156,12 +159,35 @@ namespace Decryption.SubstitutionDecript
                         string blockF = new string(blockD);
                         nativTD.TryGetValue(blockF, out cNativB);
                         cipherTD.TryGetValue(blockF, out cCipherB);
-                        
+
                         triGramProb += Math.Pow(Math.Abs(cNativB - cCipherB), 2);
                     }
                 }
             }
-            return alpha * uniGramProb + beta * biGramProb + gamma * triGramProb;
+            //for (int j = 2; j < decryptedText.Length; j++)
+            //{
+            //    string word = decryptedText.Substring(j - 2, 2);
+
+            //    double cNativA;
+            //    double cCipherA;
+            //    nativBD.TryGetValue(word, out cNativA);
+            //    cipherBD.TryGetValue(word, out cCipherA);
+            //    //Console.WriteLine("word: " + word + " score: " + ((cCipherA * 10) - Math.Pow((cCipherA - cNativA) * 2, 2)));
+            //    biGramProb += ((cNativA * 10) - Math.Pow((cCipherA - cNativA) * 2, 2));
+            //}
+
+            //for (int j = 3; j < decryptedText.Length; j++)
+            //{
+            //    string word = decryptedText.Substring(j - 3, 3);
+
+            //    double cNativA;
+            //    double cCipherA;
+            //    nativTD.TryGetValue(word, out cNativA);
+            //    cipherTD.TryGetValue(word, out cCipherA);
+            //    //Console.WriteLine("word: " + word + " score: " + ((cCipherA * 10) - Math.Pow((cCipherA - cNativA) * 2, 2)));
+            //    triGramProb += ((cNativA * 10) - (Math.Pow((cCipherA - cNativA) * 2, 2)));
+            //}
+            return uniGramProb + biGramProb + triGramProb;
         }
 
         private static double dictionaryStatisticFitness(string decryptedText)
@@ -169,7 +195,7 @@ namespace Decryption.SubstitutionDecript
             double score = 0.0;
             double length = decryptedText.Length;
             var helper = DictionaryStatisticsHelper.GetDictionaryStatistics();
-            for (int i = 4; i < 10; i++)
+            for (int i = 3; i < 10; i++)
             {
                 for (int j = i; j < decryptedText.Length; j++)
                 {
@@ -181,7 +207,7 @@ namespace Decryption.SubstitutionDecript
                 }
             }
 
-            return 200.0 * score / length;
+            return 200 * score / length;
         }
     }
 }

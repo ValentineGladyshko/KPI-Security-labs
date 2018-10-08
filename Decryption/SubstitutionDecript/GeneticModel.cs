@@ -13,13 +13,13 @@ namespace Decryption.SubstitutionDecript
         private readonly char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
         private string encryptedText;
         private SortedSet<Gen> population;
-        private int generationCount = 300;
+        private int generationCount = 200;
         private int populationCount = 50;
         private double[] maxScore;
         //private double probabilityOfCrossover = 0.65;
         private int numberOfCrossoverPoints = 2;
         private int mutationCount = 1;
-        private double percentageOfElitism = 25;
+        private double percentageOfElitism = 10;
         private int currentGeneration;
 
         public GeneticModel(string encryptedText)
@@ -183,9 +183,25 @@ namespace Decryption.SubstitutionDecript
         {
             int length = gen.Chromosome.Length;
             char[] chromosome = gen.Chromosome.ToCharArray();
-
             for (int i = 0; i < mutationCount; i++)
             {
+                int oldPosition = rand.Next(0, length);
+                int newPosition = -1;
+                do
+                {
+                    newPosition = rand.Next(0, length);
+                }
+                while (oldPosition == newPosition);
+                char oldChar = chromosome[oldPosition];
+                chromosome[oldPosition] = chromosome[newPosition];
+                chromosome[newPosition] = oldChar;
+            }
+            int mut = 1;
+            double mutation = rand.NextDouble();
+            while(mutation < Math.Pow(0.8, mut))
+            {
+                mutation = rand.NextDouble();
+                mut += 2;
                 int oldPosition = rand.Next(0, length);
                 int newPosition = -1;
                 do
@@ -217,33 +233,46 @@ namespace Decryption.SubstitutionDecript
             if (numberOfChildren > 0)
             {
                 double sumRate = 0.0;
-                foreach(var gen in population)
+                for (int i = 0; i < elitismAmount; i++)
                 {
-                    sumRate += gen.CalculateFitness();
+                    sumRate += populationArray[i].CalculateFitness();
                 }
                 List<int> index = new List<int>();
-                for (int i = 0; i < population.Count; i++)
+                for (int i = 0; i < elitismAmount; i++)
                 {
-                    int count = (int)Math.Ceiling(Math.Pow(populationArray[i].CalculateFitness(), 0.9) / 10.0);
+                    int count = (int)Math.Ceiling(Math.Pow(populationArray[i].CalculateFitness() / 100.0, 1.5));
                     for (int j = 0; j < count; j++)
                     {
                         index.Add(i);
                     }
                 }
-                
-                for (int i = 0; i < numberOfChildren; i++)
-                {
-                    Gen parent1 = populationArray[index[rand.Next(0, index.Count)]];
-                    Gen parent2 = new Gen("", encryptedText);
-                    do
-                    {
-                        parent2 = populationArray[index[rand.Next(0, index.Count)]];
-                    }
-                    while (parent1.CompareTo(parent2) == 0);
+                //foreach(var gen in population)
+                //{
+                //    sumRate += gen.CalculateFitness();
+                //}
+                //List<int> index = new List<int>();
+                //for (int i = 0; i < population.Count; i++)
+                //{
+                //    int count = (int)Math.Ceiling(Math.Pow(populationArray[i].CalculateFitness(), 0.9) / 10.0);
+                //    for (int j = 0; j < count; j++)
+                //    {
+                //        index.Add(i);
+                //    }
+                //}
 
-                    newPopulation.Add(CreateChild(parent1, parent2));
-                }
-                
+                //for (int i = 0; i < numberOfChildren; i++)
+                //{
+                //    Gen parent1 = populationArray[index[rand.Next(0, index.Count)]];
+                //    Gen parent2 = new Gen("", encryptedText);
+                //    do
+                //    {
+                //        parent2 = populationArray[index[rand.Next(0, index.Count)]];
+                //    }
+                //    while (parent1.CompareTo(parent2) == 0);
+
+                //    newPopulation.Add(CreateChild(parent1, parent2));
+                //}
+
                 while (newPopulation.Count < populationCount)
                 {
                     newPopulation.Add(Mutate(populationArray[index[rand.Next(0, index.Count)]]));

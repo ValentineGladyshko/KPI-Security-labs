@@ -30,23 +30,29 @@ namespace Decryption.SubstitutionDecript
 
         public IDictionary<char, double> LoadUniGramStatistic()
         {
+            double sum = File.ReadLines("../../..//Decryption/SubstitutionDecript/ngrams/unigram.csv")
+                .Select(line => line.Split(';')).Sum(line => Convert.ToDouble(line[1]));
             return File.ReadLines("../../../Decryption/SubstitutionDecript/ngrams/unigram.csv")
                 .Select(line => line.Split(';'))
-                .ToDictionary(line => Convert.ToChar(line[0]), line => Convert.ToDouble(line[1]) / 100);
+                .ToDictionary(line => Convert.ToChar(line[0]), line => Convert.ToDouble(line[1]) / sum);
         }
 
         public IDictionary<string,double> LoadBiGramStatistic()
         {
+            double sum = File.ReadLines("../../..//Decryption/SubstitutionDecript/ngrams/bigram.csv")
+                .Select(line => line.Split(',')).Sum(line => Convert.ToDouble(line[1]));
             return File.ReadLines("../../../Decryption/SubstitutionDecript/ngrams/bigram.csv")
                 .Select(line => line.Split(','))
-                .ToDictionary(line => line[0], line => Convert.ToDouble(line[1])/2800000000000);
+                .ToDictionary(line => line[0], line => Convert.ToDouble(line[1]) / sum);
         }
 
         public IDictionary<string,double> LoadTriGramStatistic()
         {
+            double sum = File.ReadLines("../../..//Decryption/SubstitutionDecript/ngrams/trigram.csv")
+                .Select(line => line.Split(',')).Sum(line => Convert.ToDouble(line[1]));
             return File.ReadLines("../../../Decryption/SubstitutionDecript/ngrams/trigram.csv")
                 .Select(line => line.Split(','))
-                .ToDictionary(line => line[0], line => Convert.ToDouble(line[1]) / 4500000000);
+                .ToDictionary(line => line[0], line => Convert.ToDouble(line[1]) / sum);
         }
 
         public IDictionary<char,double> CreateUniGramStatistic(string text)
