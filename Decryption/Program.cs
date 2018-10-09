@@ -75,24 +75,20 @@ namespace Decryption
             Thread.Sleep(500);
             Thread thread1 = new Thread(Gh);
             thread1.Start();
-            //DictionaryNGrams dict = DictionaryNGrams.GetDictionaryNGrams();
-            string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text3.txt").ToLower();
-            CipherFitness.Show(encryptedText);
-            //Console.WriteLine(CipherFitness.Fitness(encryptedText));
-            encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text2.txt").ToLower();
-            CipherFitness.Show(encryptedText);
-            //Console.WriteLine(CipherFitness.Fitness(encryptedText));
+            string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt").ToLower();
+            CipherFitness4.Show(encryptedText);
             encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text1.txt").ToLower();
-            CipherFitness.Show(encryptedText);
-            //Console.WriteLine(CipherFitness.Fitness(encryptedText));
-            encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt").ToLower();
-            CipherFitness.Show(encryptedText);
-            //Console.WriteLine(CipherFitness.Fitness(encryptedText));
+            CipherFitness4.Show(encryptedText);
+            encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text2.txt").ToLower();
+            CipherFitness4.Show(encryptedText);
+            encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text5.txt").ToLower();
+            CipherFitness4.Show(encryptedText);
 
-            GeneticModel gm = new GeneticModel(encryptedText);
+
+            GeneticModel4 gm = new GeneticModel4(encryptedText);
             string fd = gm.Run();
-            CipherFitness.Show(fd);
-            Console.WriteLine("\n==================\n"+fd);
+            CipherFitness4.Show(fd);
+            Console.WriteLine("\n==================\n" + fd);
             thread.Join();
             thread1.Join();
             Console.WriteLine("Press any key to continue...");
@@ -101,12 +97,11 @@ namespace Decryption
 
         public static void Gh()
         {
-            string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt").ToLower();
-            CipherFitness.Show(encryptedText);
+            string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text5.txt").ToLower();
             Thread.Sleep(500);
-            GeneticModel gm = new GeneticModel(encryptedText);
+            GeneticModel4 gm = new GeneticModel4(encryptedText);
             string fd = gm.Run();
-            CipherFitness.Show(fd);
+            CipherFitness4.Show(fd);
             Console.WriteLine("\n==================\n" + fd);
         }
 

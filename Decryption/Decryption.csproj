@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CeasarDecrypt.cs" />
+    <Compile Include="Decrypt4Task\CipherFitness4.cs" />
     <Compile Include="Decrypt4Task\Gen4.cs" />
     <Compile Include="Decrypt4Task\GeneticModel4.cs" />
     <Compile Include="Decrypt4Task\SubstitutionDecrypt4.cs" />

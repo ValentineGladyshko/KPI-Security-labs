@@ -32,11 +32,18 @@ namespace Decryption.SubstitutionDecript
             this.encryptedText = encryptedText;
         }
 
+        public Gen4 ChangeGen(int position, string gen)
+        {
+            Gen4 newGen = new Gen4(Chromosome, encryptedText);
+            newGen.Chromosome[position] = gen;
+            return newGen;
+        }
+
         public void Show()
         {
             SubstitutionDecrypt4 decriptor = new SubstitutionDecrypt4(Chromosome);
             string decryptedText = decriptor.DecryptText(encryptedText);
-            Console.WriteLine(CipherFitness.Evaluate(decryptedText));
+            Console.WriteLine(CipherFitness4.Evaluate(decryptedText));
         }
 
         public double CalculateFitness()
@@ -47,7 +54,7 @@ namespace Decryption.SubstitutionDecript
             {
                 SubstitutionDecrypt4 decriptor = new SubstitutionDecrypt4(Chromosome);
                 string decryptedText = decriptor.DecryptText(encryptedText);
-                rate = CipherFitness.Evaluate(decryptedText);
+                rate = CipherFitness4.Evaluate(decryptedText);
                 return rate.Value;
             }
             
@@ -62,7 +69,18 @@ namespace Decryption.SubstitutionDecript
             {
                 return result;
             }
-            return 0 /*Chromosome.CompareTo(other.Chromosome)*/;
+            else
+            {
+                for (int i = 0; i < Chromosome.Count; i++)
+                {
+                    result = Chromosome[i].CompareTo(other.Chromosome[i]);
+                    if (result != 0)
+                    {
+                        return result;
+                    }
+                }
+            }
+            return 0;
         }
     }
 }

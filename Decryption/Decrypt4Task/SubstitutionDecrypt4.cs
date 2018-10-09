@@ -10,30 +10,40 @@ namespace Decryption.SubstitutionDecript
     {
         private readonly char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
         public List<string> key;
-        public Dictionary<char, char> dictionary;
+        public List<Dictionary<char, char>> dictionary;
 
         public SubstitutionDecrypt4(List<string> key)
         {
-            dictionary = new Dictionary<char, char>();
+            dictionary = new List<Dictionary<char, char>>();
             this.key = key;
-            for (int i = 0; i < alphabet.Length; i++) 
+            for (int i = 0; i < key.Count; i++)
             {
-                dictionary.Add(key[i][0], alphabet[i]);
+                dictionary.Add(new Dictionary<char, char>());
+                for (int j = 0; j < alphabet.Length; j++)
+                {
+                    dictionary[i].Add(key[i][j], alphabet[j]);
+                }
             }
         }
 
         public string DecryptText(string source)
         {
             string decryptedText = "";
+            int i = 0;
             foreach (char c in source)
             {
                 if (Char.IsLetter(c))
                 {
-                    decryptedText += dictionary[c];
+                    decryptedText += dictionary[i][c];
                 }
                 else
                 {
                     decryptedText += c;
+                }
+                i++;
+                if(i == key.Count)
+                {
+                    i = 0;
                 }
             }
             return decryptedText;
