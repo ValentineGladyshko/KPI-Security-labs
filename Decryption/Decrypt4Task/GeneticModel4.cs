@@ -13,7 +13,7 @@ namespace Decryption.SubstitutionDecript
         private readonly char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
         private string encryptedText;
         private SortedSet<Gen4> population;
-        private int generationCount = 300;
+        private int generationCount = 1000;
         private int populationCount = 50;
         private int keySize = 4;
         private double[] maxScore;
@@ -40,12 +40,14 @@ namespace Decryption.SubstitutionDecript
             }
             return new string(key);
         }
-
+        //dejgnseprseranithribiljtmdntosjiilltilfltmdervrwadufoewfilemoshsedyithigaheaefnsceneegsttebrelerbtwanhaintrfetitefofileciorgnsunawenplyaddcithmathrrtlenomosdoncerdeawicounoputadserandoseciconyourhowsfrvarymoeanenohohnreanvdognnvooirevrskttfiluanhhllstavialetvldhtmeetaacwanhaivrhsehoectdcrtbnamownvutshairsitcrowoinfrgothttpdclattitawneyhaiconyoharsarsetjwnvutomeizhnsiacashenofrhytitleswingieinthlndcaocaallrqalqterdunchthsphstpanyoliabteidfjrmdoseeyhpzothtmhlqeltstmermlkslonecththrufeupoowerdebriscttfombanmidinslralwhsjgommniorwethsqtwantoedolcerdebtrepngfoliwapkrtseraniavaotethspnmfgmoulesdivbltheastrhdfwansbllhdpstfeaijcrsneetvtiheldcrsleswingpolisapobaoysaoovonunnsiiswhabhairsitcshluorchqhafryrtkenoqhauordkrenceispgticarrthoxeqahilosyeosteedicorendtideabserdsjusecicoocnemislneuideefshesiboat
         public string Run()
         {
             CreateFirstPopulation();
             double maxRate = 0.0;
             double sumRate = 0.0;
+            int ss = 0;
+
             foreach (var Gen4 in population)
             {
                 sumRate += Gen4.CalculateFitness();
@@ -59,6 +61,13 @@ namespace Decryption.SubstitutionDecript
             //population[0].Show(encryptedText);
             for (int i = 0; i < generationCount; i++)
             {
+                
+                if (ss == 100)
+                {
+                    Console.WriteLine("\n===========\n" + new SubstitutionDecrypt4(population.First().Chromosome).DecryptText(encryptedText));
+                    ss = 0;
+                }
+                ss++;
                 CreateNewGeneration();
                 //Console.WriteLine("generation: " + currentGeneration);
                 maxRate = 0.0;
@@ -108,9 +117,14 @@ namespace Decryption.SubstitutionDecript
 
         private Gen4 Mutate(Gen4 gen)
         {
-            int position = rand.Next(0, keySize);            
-            char[] chromosome = gen.Chromosome[position].ToCharArray();
-            int length = chromosome.Length;
+            int position = rand.Next(0, keySize);
+
+            List<char[]> chromosome = new List<char[]>();
+            for (int i = 0; i < gen.Chromosome.Count; i++) 
+            {
+                chromosome.Add(gen.Chromosome[i].ToCharArray());
+            }
+            int length = chromosome[position].Length;
 
             for (int i = 0; i < mutationCount; i++)
             {
@@ -121,14 +135,15 @@ namespace Decryption.SubstitutionDecript
                     newPosition = rand.Next(0, length);
                 }
                 while (oldPosition == newPosition);
-                char oldChar = chromosome[oldPosition];
-                chromosome[oldPosition] = chromosome[newPosition];
-                chromosome[newPosition] = oldChar;
+                char oldChar = chromosome[position][oldPosition];
+                chromosome[position][oldPosition] = chromosome[position][newPosition];
+                chromosome[position][newPosition] = oldChar;
             }
             int mut = 1;
             double mutation = rand.NextDouble();
             while (mutation < Math.Pow(0.8, mut))
             {
+                position = rand.Next(0, keySize);
                 mutation = rand.NextDouble();
                 mut += 2;
                 int oldPosition = rand.Next(0, length);
@@ -138,12 +153,18 @@ namespace Decryption.SubstitutionDecript
                     newPosition = rand.Next(0, length);
                 }
                 while (oldPosition == newPosition);
-                char oldChar = chromosome[oldPosition];
-                chromosome[oldPosition] = chromosome[newPosition];
-                chromosome[newPosition] = oldChar;
+                char oldChar = chromosome[position][oldPosition];
+                chromosome[position][oldPosition] = chromosome[position][newPosition];
+                chromosome[position][newPosition] = oldChar;
             }
 
-            return gen.ChangeGen(position, new string(chromosome));
+            List<string> newChromosome = new List<string>();
+
+            for (int i = 0; i < chromosome.Count; i++)
+            {
+                newChromosome.Add(new string(chromosome[i]));
+            }
+            return new Gen4(newChromosome, encryptedText);
         }
 
         public void CreateNewGeneration()

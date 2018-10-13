@@ -13,10 +13,10 @@ namespace Decryption.SubstitutionDecript
         private readonly char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
         private string encryptedText;
         private SortedSet<Gen> population;
-        private int generationCount = 200;
-        private int populationCount = 50;
+        private int generationCount = 350;
+        private int populationCount = 30;
         private double[] maxScore;
-        //private double probabilityOfCrossover = 0.65;
+        private double probabilityOfMutation = 0.8;
         private int numberOfCrossoverPoints = 2;
         private int mutationCount = 1;
         private double percentageOfElitism = 10;
@@ -71,40 +71,23 @@ namespace Decryption.SubstitutionDecript
                         maxRate = gen.CalculateFitness();
                 }
                 maxScore[i] = maxRate;
-                if (i > 20 && maxScore[i] == maxScore[i - 20])
+                
+                if (maxRate > 6000.0)
                 {
-                    
-                    Console.Write("No new gens: ");
-                    CipherFitness.Show(new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText));
-
-                    //int elitismAmount = (int)Math.Ceiling(populationCount * (percentageOfElitism / 100.0));
-                    //for (int j = 0; j < elitismAmount; j++)
-                    //{
-                    //    Console.WriteLine(population[j].chromosome);
-                    //}
+                    probabilityOfMutation = 0.65;
                 }
-                //if (maxRate > 800.0)
-                //{
-                //    mutationCount = 4;
-                //    probabilityOfMutation = 0.4;
-                //    numberOfCrossoverPoints = 4;
-                //    probabilityOfCrossover = 0.6;
-                //}
-                //if (maxRate > 1500.0)
-                //{
-                //    mutationCount = 3;
-                //    probabilityOfMutation = 0.35;
-                //    numberOfCrossoverPoints = 3;
-                //    probabilityOfCrossover = 0.5;
-                //}
-                //if (maxRate > 7500.0)
-                //{
-                //    Console.WriteLine(new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText));
-                //    //Console.WriteLine(sd.DecryptText(encryptedText));
-                //}
+
+                if (maxRate > 9500.0)
+                {
+                    probabilityOfMutation = 0.35;
+                }
                 Console.WriteLine("generation: " + currentGeneration + " max rate: " + maxRate + " avg rate: " +
                 (sumRate / populationCount) + " gen: " + population.First().Chromosome);
-                // population[0].Show(encryptedText);
+                if (maxRate > 11913.0)
+                {
+                    return "Gen: " + population.First().Chromosome + "\n" +
+                        new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText);
+                }
             }
             return new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText);
         }
@@ -118,65 +101,6 @@ namespace Decryption.SubstitutionDecript
                 Gen gen = new Gen(GenerateRandomKey(), encryptedText);
                 population.Add(gen);
             }
-        }
-
-        private Gen CreateChild(Gen gen1, Gen gen2)
-        {
-            int length = gen1.Chromosome.Length;
-
-            char[] child = new char[length];
-
-            // Position Based Crossover
-
-            List<int> randomPositions = new List<int>();
-            for (int i = 0; i < numberOfCrossoverPoints; i++)
-            {
-                int index = -1;
-                do
-                {
-                    index = rand.Next(0, length);
-                }
-                while (randomPositions.Contains(index));
-
-                randomPositions.Add(index);
-            }
-
-            List<char> remainingCharacters1 = new List<char>(gen2.Chromosome.ToCharArray());
-            List<char> remainingCharacters2 = new List<char>(gen1.Chromosome.ToCharArray());
-
-            foreach (int point in randomPositions)
-            {
-                char c1 = gen1.Chromosome[point];
-                char c2 = gen2.Chromosome[point];
-                child[point] = c1;
-                remainingCharacters1.Remove(c1);
-            }
-            int j = 0;
-            for (int i = 0; i < length; i++)
-            {
-                if (!randomPositions.Contains(i))
-                {
-                    child[i] = remainingCharacters1[j];
-                    j++;
-                }
-            }
-
-            // Will Child Mutate
-
-            for (int i = 0; i < mutationCount; i++)
-            {
-                int oldPosition = rand.Next(0, length);
-                int newPosition = -1;
-                do
-                {
-                    newPosition = rand.Next(0, length);
-                }
-                while (oldPosition == newPosition);
-                char oldChar = child[oldPosition];
-                child[oldPosition] = child[newPosition];
-                child[newPosition] = oldChar;
-            }
-            return new Gen(new string(child), encryptedText);
         }
 
         private Gen Mutate(Gen gen)
@@ -198,7 +122,7 @@ namespace Decryption.SubstitutionDecript
             }
             int mut = 1;
             double mutation = rand.NextDouble();
-            while(mutation < Math.Pow(0.8, mut))
+            while(mutation < Math.Pow(probabilityOfMutation, mut))
             {
                 mutation = rand.NextDouble();
                 mut += 2;
@@ -246,32 +170,6 @@ namespace Decryption.SubstitutionDecript
                         index.Add(i);
                     }
                 }
-                //foreach(var gen in population)
-                //{
-                //    sumRate += gen.CalculateFitness();
-                //}
-                //List<int> index = new List<int>();
-                //for (int i = 0; i < population.Count; i++)
-                //{
-                //    int count = (int)Math.Ceiling(Math.Pow(populationArray[i].CalculateFitness(), 0.9) / 10.0);
-                //    for (int j = 0; j < count; j++)
-                //    {
-                //        index.Add(i);
-                //    }
-                //}
-
-                //for (int i = 0; i < numberOfChildren; i++)
-                //{
-                //    Gen parent1 = populationArray[index[rand.Next(0, index.Count)]];
-                //    Gen parent2 = new Gen("", encryptedText);
-                //    do
-                //    {
-                //        parent2 = populationArray[index[rand.Next(0, index.Count)]];
-                //    }
-                //    while (parent1.CompareTo(parent2) == 0);
-
-                //    newPopulation.Add(CreateChild(parent1, parent2));
-                //}
 
                 while (newPopulation.Count < populationCount)
                 {

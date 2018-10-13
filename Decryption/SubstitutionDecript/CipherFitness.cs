@@ -18,7 +18,6 @@ namespace Decryption.SubstitutionDecript
                 return 30 / langStat;
             }
             return 30 / langStat + dictStat;
-            //return langStat + dictStat;
         }
 
         public static void Show(string decryptedText)
@@ -26,7 +25,6 @@ namespace Decryption.SubstitutionDecript
             decryptedText = decryptedText.ToLower();
             double langStat = languageStatisticFitness(decryptedText);
             double dictStat = dictionaryStatisticFitness(decryptedText);
-            //Console.WriteLine("lang: " + langStat+ " dict: " + +dictStat);
 
             double stat = 0.0;
             if ((30 / langStat) < 1200.0)
@@ -39,78 +37,7 @@ namespace Decryption.SubstitutionDecript
             }
             Console.WriteLine("sum: " + stat + " lang: " + (30 / langStat) + " dict: " + dictStat);
         }
-        //public static double Fitness(string decryptedText)
-        //{
-        //    double score = 0.0;
-        //    var dict = DictionaryNGrams.GetDictionaryNGrams().NGramDict;
-        //    foreach (int i in NGrams)
-        //    {
-        //        for (int j = 0; j < (decryptedText.Length - i + 1); j++)
-        //        {
-        //            dict.TryGetValue(decryptedText.Substring(j, i), out double curScore);
-        //            score += 0.3 * Math.Pow(Math.Pow(i, 6) * curScore, 1.5);
-        //        }
-        //    }
-        //    //decryptedText = decryptedText.ToLower();
-        //    //double sum = 0.0;
-        //    //Dictionary<string, double> curNGram = new Dictionary<string, double>();
-        //    //Dictionary<string, double> curNGram1 = new Dictionary<string, double>();
-        //    //foreach (int i in NGrams)
-        //    //{
-        //    //    for (int j = 0; j < (decryptedText.Length - i + 1); j++)
-        //    //    {
-        //    //        sum += 1;
-        //    //        string key = decryptedText.Substring(j, i);
-        //    //        if (curNGram.ContainsKey(key))
-        //    //        {
-        //    //            curNGram[key] += 1;
-        //    //        }
-        //    //        else
-        //    //        {
-        //    //            curNGram[key] = 1;
-        //    //        }
-        //    //    }
-        //    //}
-
-        //    //foreach(var pair in curNGram)
-        //    //{
-        //    //    curNGram1[pair.Key] = pair.Value / sum;
-        //    //}
-        //    //double sum1 = 0.0;
-        //    //foreach (var pair in curNGram1.Values)
-        //    //{
-        //    //    sum1 += pair;
-        //    //}
-        //    //Console.WriteLine(sum1);
-        //    //var dict = DictionaryNGrams.GetDictionaryNGrams().NGramDict;
-        //    //foreach (var pair in curNGram)
-        //    //{
-        //    //    dict.TryGetValue(pair.Key, out double curScore);
-
-        //    //}
-        //    double score1 = 0.0;
-        //    if (score > 1000)
-        //    {
-        //        double score2 = 0.0;
-        //        double length = decryptedText.Length;
-        //        var helper = DictionaryStatisticsHelper.GetDictionaryStatistics();
-        //        for (int i = 4; i < 10; i++)
-        //        {
-        //            for (int j = i; j < decryptedText.Length; j++)
-        //            {
-        //                string word = decryptedText.Substring(j - i, i);
-        //                if (helper.Dictionary.Contains(word))
-        //                {
-        //                    score2 += Math.Pow(i, 1.5);
-        //                }
-        //            }
-        //        }
-        //        score1 = 4000.0 * score2 / length;
-
-        //    }
-        //    return score + score1;
-        //}
-
+        
         private static double languageStatisticFitness(string decryptedText)
         {
             var statisticHelper = LanguageStatisticsHelper.GetLanguageStatistics();
@@ -120,10 +47,6 @@ namespace Decryption.SubstitutionDecript
             var nativUD = statisticHelper.UniGramDict;
             var nativBD = statisticHelper.BiGramDict;
             var nativTD = statisticHelper.TriGramDict;
-
-            double alpha = 1.0;
-            double beta = 1.0;
-            double gamma = 1.0;
 
             double uniGramProb = 0.0;
             double biGramProb = 0.0;
@@ -164,29 +87,7 @@ namespace Decryption.SubstitutionDecript
                     }
                 }
             }
-            //for (int j = 2; j < decryptedText.Length; j++)
-            //{
-            //    string word = decryptedText.Substring(j - 2, 2);
-
-            //    double cNativA;
-            //    double cCipherA;
-            //    nativBD.TryGetValue(word, out cNativA);
-            //    cipherBD.TryGetValue(word, out cCipherA);
-            //    //Console.WriteLine("word: " + word + " score: " + ((cCipherA * 10) - Math.Pow((cCipherA - cNativA) * 2, 2)));
-            //    biGramProb += ((cNativA * 10) - Math.Pow((cCipherA - cNativA) * 2, 2));
-            //}
-
-            //for (int j = 3; j < decryptedText.Length; j++)
-            //{
-            //    string word = decryptedText.Substring(j - 3, 3);
-
-            //    double cNativA;
-            //    double cCipherA;
-            //    nativTD.TryGetValue(word, out cNativA);
-            //    cipherTD.TryGetValue(word, out cCipherA);
-            //    //Console.WriteLine("word: " + word + " score: " + ((cCipherA * 10) - Math.Pow((cCipherA - cNativA) * 2, 2)));
-            //    triGramProb += ((cNativA * 10) - (Math.Pow((cCipherA - cNativA) * 2, 2)));
-            //}
+            
             return uniGramProb + biGramProb + triGramProb;
         }
 

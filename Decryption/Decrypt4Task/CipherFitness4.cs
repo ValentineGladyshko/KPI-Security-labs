@@ -17,7 +17,7 @@ namespace Decryption.SubstitutionDecript
             {
                 return 30 / langStat;
             }
-            return 30 / langStat + dictStat;
+            return 30 / langStat /*+ dictStat*/;
             //return dictStat;
         }
 
@@ -35,7 +35,7 @@ namespace Decryption.SubstitutionDecript
             }
             else
             {
-                stat = 30 / langStat + dictStat;
+                stat = 30 / langStat /*+ dictStat*/;
             }
             Console.WriteLine("sum: " + stat + " lang: " + (30 / langStat) + " dict: " + dictStat);
         }
