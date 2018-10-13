@@ -22,7 +22,7 @@ namespace Decryption.SubstitutionDecript
 
         private HashSet<string> LoadDictionary()
         {
-            string[] lines = File.ReadAllLines("../../../Decryption/SubstitutionDecript/dictionary/words_alpha.txt");
+            string[] lines = File.ReadAllLines("../../../Decryption/SubstitutionDecript/words.txt");
             return new HashSet<string>(lines);
         }
     }

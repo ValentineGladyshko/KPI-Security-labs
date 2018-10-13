@@ -30,21 +30,21 @@ namespace Decryption.SubstitutionDecript
 
         public IDictionary<char, double> LoadUniGramStatistic()
         {
-            return File.ReadLines("../../../Decryption/SubstitutionDecript/ngrams/unigram.csv")
+            return File.ReadLines("../../../Decryption/SubstitutionDecript/unigram.csv")
                 .Select(line => line.Split(';'))
                 .ToDictionary(line => Convert.ToChar(line[0]), line => Convert.ToDouble(line[1]) / 100);
         }
 
         public IDictionary<string,double> LoadBiGramStatistic()
         {
-            return File.ReadLines("../../../Decryption/SubstitutionDecript/ngrams/bigram.csv")
+            return File.ReadLines("../../../Decryption/SubstitutionDecript/bigram.csv")
                 .Select(line => line.Split(','))
                 .ToDictionary(line => line[0], line => Convert.ToDouble(line[1])/2800000000000);
         }
 
         public IDictionary<string,double> LoadTriGramStatistic()
         {
-            return File.ReadLines("../../../Decryption/SubstitutionDecript/ngrams/trigram.csv")
+            return File.ReadLines("../../../Decryption/SubstitutionDecript/trigram.csv")
                 .Select(line => line.Split(','))
                 .ToDictionary(line => line[0], line => Convert.ToDouble(line[1]) / 4500000000);
         }
