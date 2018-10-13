@@ -51,16 +51,21 @@
     <Compile Include="SubstitutionDecript\CipherFitness.cs" />
     <Compile Include="SubstitutionDecript\DictionaryStatisticsHelper.cs" />
     <Compile Include="SubstitutionDecript\LanguageStatisticsHelper.cs" />
+    <Compile Include="SubstitutonPolyALphDecryptor.cs" />
     <Compile Include="VigenereDecrypt.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="SubstitutionDecript\bigram.csv" />
+    <None Include="SubstitutionDecript\trigram.csv" />
+    <None Include="SubstitutionDecript\unigram.csv" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SubstitutionDecript\english_bigrams.txt" />
     <Content Include="SubstitutionDecript\english_quadgrams.txt" />
+    <Content Include="SubstitutionDecript\words.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
