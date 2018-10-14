@@ -95,7 +95,7 @@ namespace Decryption.SubstitutionDecript
             double score = 0.0;
             double length = decryptedText.Length;
             var helper = DictionaryStatisticsHelper.GetDictionaryStatistics();
-            for (int i = 3; i < 10; i++)
+            for (int i = 4; i < 10; i++)
             {
                 for (int j = i; j < decryptedText.Length; j++)
                 {

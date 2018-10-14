@@ -62,19 +62,37 @@ namespace Decryption
         public static string TransformByHillСlimbing(string text)
         {
             double coef = 0;
-            var key1 = GenerateRandomKey();
-            var key2 = GenerateRandomKey();
-            var key3 = GenerateRandomKey();
-            var key4 = GenerateRandomKey();
-            var tempKey1 = key1;
-            var tempKey2 = key2;
-            var tempKey3 = key3;
-            var tempKey4 = key4;
-            var bestKey1 = tempKey1;
-            var bestKey2 = tempKey2;
-            var bestKey3 = tempKey3;
-            var bestKey4 = tempKey4;
+            List<IEnumerable<char>> keys = new List<IEnumerable<char>>();
+            keys.Add(GenerateRandomKey());
+            keys.Add(GenerateRandomKey());
+            keys.Add(GenerateRandomKey());
+            keys.Add(GenerateRandomKey());
+            List<IEnumerable<char>> keys2 = new List<IEnumerable<char>>(4);
+            keys2.Add(GenerateRandomKey());
+            keys2.Add(GenerateRandomKey());
+            keys2.Add(GenerateRandomKey());
+            keys2.Add(GenerateRandomKey());
+
+            List<IEnumerable<char>> tempkeys = new List<IEnumerable<char>>();
+            tempkeys.Add(keys[0]);
+            tempkeys.Add(keys[1]);
+            tempkeys.Add(keys[2]);
+            tempkeys.Add(keys[3]);
+
+            List<IEnumerable<char>> bestFirstKeys = new List<IEnumerable<char>>(4);
+            List<IEnumerable<char>> bestSecondKeys = new List<IEnumerable<char>>(4);
+            bestFirstKeys.Add(tempkeys[0]);
+            bestFirstKeys.Add(tempkeys[1]);
+            bestFirstKeys.Add(tempkeys[2]);
+            bestFirstKeys.Add(tempkeys[3]);
+
+            bestSecondKeys.Add(tempkeys[0]);
+            bestSecondKeys.Add(tempkeys[1]);
+            bestSecondKeys.Add(tempkeys[2]);
+            bestSecondKeys.Add(tempkeys[3]);
+
             double bestKeyCoef = 0;
+            double bestKeyCoef2 = 0;
             int keyCounter = 0;
 
             int exiter2 = 0;
@@ -82,7 +100,7 @@ namespace Decryption
 
             while (exiter < 100)
             {
-                temp = TransformByFrequency(text, tempKey1, tempKey2, tempKey3, tempKey4);
+                temp = TransformByFrequency(text, tempkeys[0], tempkeys[1], tempkeys[2], tempkeys[3]);
 
                 Console.SetCursorPosition(0, 0);
                 Console.WriteLine(temp);
@@ -118,18 +136,32 @@ namespace Decryption
                 {
                     if (bestKeyCoef < tempCoef)
                     {
-                        bestKey1 = tempKey1;
-                        bestKey2 = tempKey2;
-                        bestKey3 = tempKey3;
-                        bestKey4 = tempKey4;
+                        bestFirstKeys[0] = tempkeys[0];
+                        bestFirstKeys[1] = tempkeys[1];
+                        bestFirstKeys[2] = tempkeys[2];
+                        bestFirstKeys[3] = tempkeys[3];
                         bestKeyCoef = tempCoef;
                     }
-                    if (keyCounter >= 20)
+                    else if(bestKeyCoef2 < tempCoef)
                     {
-                        key1 = tempKey1;
-                        key2 = tempKey2;
-                        key3 = tempKey3;
-                        key4 = tempKey4;
+                        bestSecondKeys[0] = tempkeys[0];
+                        bestSecondKeys[1] = tempkeys[1];
+                        bestSecondKeys[2] = tempkeys[2];
+                        bestSecondKeys[3] = tempkeys[3];
+                        bestKeyCoef = tempCoef;
+                    }
+
+                    if (keyCounter >= 60)
+                    {
+                        keys[0] = bestFirstKeys[0];
+                        keys[1] = bestFirstKeys[1];
+                        keys[2] = bestFirstKeys[2];
+                        keys[3] = bestFirstKeys[3];
+
+                        keys2[0] = bestSecondKeys[0];
+                        keys2[1] = bestSecondKeys[1];
+                        keys2[2] = bestSecondKeys[2];
+                        keys2[3] = bestSecondKeys[3];
                         coef = tempCoef;
                         exiter = 0;
                         exiter2 = 0;
@@ -151,10 +183,10 @@ namespace Decryption
                 //if (evolution > 3 && evolution < 7) tempKey3 = ChangeKey(key3);
                 //if (evolution > 6) tempKey4 = ChangeKey(key4);
 
-                if(evolution<17) tempKey1 = ChangeKey(key1);
-                if (evolution < 25) tempKey2 = ChangeKey(key2);
-                if (evolution < 20) tempKey3 = ChangeKey(key3);
-                if (evolution < 19) tempKey4 = ChangeKey(key4);
+                tempkeys[0] = ChangeKey(keys[0], keys2[0]);
+                tempkeys[1] = ChangeKey(keys[1], keys2[1]);
+                tempkeys[2] = ChangeKey(keys[2], keys2[2]);
+                tempkeys[3] = ChangeKey(keys[3], keys2[3]);
                 keyCounter++;
             }
 
@@ -166,6 +198,8 @@ namespace Decryption
             text = text.ToUpper();
             //переробити на правильне
             double res = 0;
+            double res2 = 0;
+            double res3 = 0;
 
             var bigs = bigrams;
             var trigs = trigrams;
@@ -179,18 +213,42 @@ namespace Decryption
             foreach (var tg in trigs)
             {
                 int counter = text.Split(new string[] { tg.Key }, StringSplitOptions.None).Count() - 1;
-                res += Math.Log10(tg.Value) * counter;
+                res2 += Math.Log10(tg.Value) * counter;
             }
 
-            res += new CipherFitness().dictionaryStatisticFitness(text);
+            res3 += new CipherFitness().dictionaryStatisticFitness(text);
 
-            return res;
+            return res*10 + res2*100 + res3*10000;
         }
 
-        private static IEnumerable<char> ChangeKey(IEnumerable<char> input)
+        private static IEnumerable<char> ChangeKey(IEnumerable<char> input, IEnumerable<char> input2)
         {
             var list = input.ToList();
+            var list2 = input2.ToList();
+
             Random random = new Random();
+
+            int geneticCount = random.Next(1,10);
+
+            for(int i =0; i< geneticCount; i++)
+            {
+                int geneticPosition = random.Next(0, input.Count()-1);
+
+                var temp = list[geneticPosition];
+                var temp2 = list.IndexOf(list2[geneticPosition]);
+                var temp3 = list2.IndexOf(temp);
+
+                list[geneticPosition] = list2[geneticPosition];
+                list[temp2] = temp;
+
+                list2[geneticPosition] = temp;
+                list2[temp3] = list[geneticPosition];
+            }
+
+            double listCoef = GetCoefficient(new string(list.ToArray()), 1);
+            double listCoef1 = GetCoefficient(new string(list2.ToArray()), 1);
+            if (listCoef1 > listCoef) list = list2;
+
             if (exiter2 > 30) speedy2 = false;
             if (exiter > 100) speedy = false;
             if (stage == 1 && speedy2)
@@ -218,7 +276,7 @@ namespace Decryption
             else if (speedy)
             {
                 int countSwap;
-                countSwap = random.Next(1, 4);
+                countSwap = random.Next(0, 1);
 
                 int first;
                 int second;
@@ -238,25 +296,15 @@ namespace Decryption
             }
             else
             {
-                int countSwap;
-                countSwap = random.Next(1, 8);
-                //else countSwap = random.Next(1, 2);
-
                 int first;
                 int second;
 
-                List<int> listOfSwaps = new List<int>();
-                for (int i = 0; i < countSwap; i++)
-                {
-                    do
-                    {
-                        first = random.Next(list.Count);
-                        second = random.Next(list.Count);
-                    } while (listOfSwaps.Contains(first) || listOfSwaps.Contains(second));
-                    var temp = list[first];
-                    list[first] = list[second];
-                    list[second] = temp;
-                }
+                first = random.Next(list.Count);
+                second = random.Next(list.Count);
+
+                var temp = list[first];
+                list[first] = list[second];
+                list[second] = temp;
             }
 
             return list;
