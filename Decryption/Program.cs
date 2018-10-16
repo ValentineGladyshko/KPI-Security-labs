@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Collections.Generic;
 using System.IO;
-using Decryption.SubstitutionDecript;
+using Decryption.Proto4Task;
 
 namespace Decryption
 {
@@ -23,40 +23,41 @@ namespace Decryption
 
             #region Task1
 
-            CeasarDecrypt ceasarDecrypt = new CeasarDecrypt(ReadFromFile("task1.txt"));
-            string result1 = ceasarDecrypt.Decrypt();
-            Console.WriteLine("Ceasar Decrypt:\n" + result1 + "\n");
-            WriteToFile("result1.txt", result1);
+            //CeasarDecrypt ceasarDecrypt = new CeasarDecrypt(ReadFromFile("task1.txt"));
+            //string result1 = ceasarDecrypt.Decrypt();
+            //Console.WriteLine("Ceasar Decrypt:\n" + result1 + "\n");
+            //WriteToFile("result1.txt", result1);
 
             #endregion
 
             #region Task2
 
-            VigenereDecrypt vigenereDecrypt = new VigenereDecrypt(DecodeHexToUTF8(ReadFromFile("task2.txt")), null);
-            string result2 = vigenereDecrypt.Decrypt();
-            Console.WriteLine("Vigenere Decrypt:\n" + result2 + "\n");
-            WriteToFile("result2.txt", result2);
+            //VigenereDecrypt vigenereDecrypt = new VigenereDecrypt(DecodeHexToUTF8(ReadFromFile("task2.txt")), null);
+            //string result2 = vigenereDecrypt.Decrypt();
+            //Console.WriteLine("Vigenere Decrypt:\n" + result2 + "\n");
+            //WriteToFile("result2.txt", result2);
 
             #endregion
 
             #region Task3
 
-            Console.WriteLine("Press any key to start substitution decrypt");
-            Console.ReadKey();
+            DictionaryNGrams.GetDictionaryNGrams();
+            //Console.WriteLine("Press any key to start substitution decrypt");
+            //Console.ReadKey();
 
-            Thread thread1 = new Thread(Gh);
-            thread1.Start();
-            Thread.Sleep(100);
-            Thread thread2 = new Thread(Gh);
-            thread2.Start();
-            Thread.Sleep(100);
-            Thread thread3 = new Thread(Gh);
-            thread3.Start();
-            Thread.Sleep(500);
+            //Thread thread1 = new Thread(Gh);
+            //thread1.Start();
+            //Thread.Sleep(100);
+            //Thread thread2 = new Thread(Gh);
+            //thread2.Start();
+            //Thread.Sleep(100);
+            //Thread thread3 = new Thread(Gh);
+            //thread3.Start();
+            //Thread.Sleep(500);
 
-            thread1.Join();
-            thread2.Join();
-            thread3.Join();
+            //thread1.Join();
+            //thread2.Join();
+            //thread3.Join();
 
             #endregion
             Console.WriteLine("Press any key to continue...");
@@ -65,11 +66,11 @@ namespace Decryption
 
         public static void Gh()
         {
-            string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/task3.txt").ToLower();
-            Thread.Sleep(100);
-            GeneticModel gm = new GeneticModel(encryptedText);
-            string result3 = gm.Run();
-            Console.WriteLine("\n======================\n\nSubstitution Decrypt:\n" + result3 + "\n\n======================\n");
+            //string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/task3.txt").ToLower();
+            //Thread.Sleep(100);
+            //GeneticModel gm = new GeneticModel(encryptedText);
+            //string result3 = gm.Run();
+            //Console.WriteLine("\n======================\n\nSubstitution Decrypt:\n" + result3 + "\n\n======================\n");
         }
 
         public static string ReadFromFile(string filepath)
