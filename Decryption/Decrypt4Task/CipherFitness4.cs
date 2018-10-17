@@ -11,88 +11,216 @@ namespace Decryption.SubstitutionDecript
         public static double Evaluate(string decryptedText)
         {
             decryptedText = decryptedText.ToLower();
-            double langStat = languageStatisticFitness(decryptedText);
+            double uniStat = UniGramFitness(decryptedText);
+            double biStat = BiGramFitness(decryptedText);
+            double triStat = TriGramFitness(decryptedText);
+            //double quadStat = QuadGramFitness(decryptedText);
             double dictStat = dictionaryStatisticFitness(decryptedText);
-            if ((30 / langStat) < 1200.0)
+
+            return 30 / (uniStat + biStat + triStat) + dictStat;
+        }
+
+        public static double NewEvaluate(string decryptedText)
+        {
+            decryptedText = decryptedText.ToLower();
+
+            var statisticHelper = LanguageStatisticsHelper.GetLanguageStatistics();
+            var uniDict = statisticHelper.UniGramDict;
+            var biDict = statisticHelper.BiGramDict;
+            var triDict = statisticHelper.TriGramDict;
+            var quadDict = statisticHelper.QuadGramDict;
+            var pentaDict = statisticHelper.PentaGramDict;
+
+            double uni = 0.0;
+            double bi = 0.0;
+            double tri = 0.0;
+            double quad = 0.0;
+            double penta = 0.0;
+
+            foreach (char c in decryptedText)
             {
-                return 30 / langStat;
+                uniDict.TryGetValue(c, out double prob);
+                uni += prob;
             }
-            return 30 / langStat /*+ dictStat*/;
-            //return dictStat;
+
+            for (int j = 0; j < (decryptedText.Length - 1); j++)
+            {
+                string key = decryptedText.Substring(j, 2);
+                biDict.TryGetValue(key, out double prob);
+                bi += prob * 4;
+            }
+
+            for (int j = 0; j < (decryptedText.Length - 2); j++)
+            {
+                string key = decryptedText.Substring(j, 3);
+                triDict.TryGetValue(key, out double prob);
+                tri += prob * 9;
+            }
+
+            for (int j = 0; j < (decryptedText.Length - 3); j++)
+            {
+                string key = decryptedText.Substring(j, 4);
+                quadDict.TryGetValue(key, out double prob);
+                quad += prob * 16;
+            }
+            for (int j = 0; j < (decryptedText.Length - 4); j++)
+            {
+                string key = decryptedText.Substring(j, 5);
+                pentaDict.TryGetValue(key, out double prob);
+                penta += prob * 25;
+            }
+
+
+           // double dictStat = dictionaryStatisticFitness(decryptedText);
+
+            //Console.WriteLine("uni: " + uni.ToString("F3") + " bi: " + bi.ToString("F3") +
+            //    " tri: " + tri.ToString("F3") + " quad: " + quad.ToString("F3") + " penta: "+ penta.ToString("F3") + " dict: " + dictStat.ToString("F3"));
+            return uni + bi + tri + quad + penta;
+        }
+
+        public static void NewEvaluateShow(string decryptedText)
+        {
+            decryptedText = decryptedText.ToLower();
+
+            var statisticHelper = LanguageStatisticsHelper.GetLanguageStatistics();
+            var uniDict = statisticHelper.UniGramDict;
+            var biDict = statisticHelper.BiGramDict;
+            var triDict = statisticHelper.TriGramDict;
+            var quadDict = statisticHelper.QuadGramDict;
+            var pentaDict = statisticHelper.PentaGramDict;
+
+            double uni = 0.0;
+            double bi = 0.0;
+            double tri = 0.0;
+            double quad = 0.0;
+            double penta = 0.0;
+
+            foreach (char c in decryptedText)
+            {
+                uniDict.TryGetValue(c, out double prob);
+                uni += prob;
+            }
+
+            for (int j = 0; j < (decryptedText.Length - 1); j++)
+            {
+                string key = decryptedText.Substring(j, 2);
+                biDict.TryGetValue(key, out double prob);
+                bi += prob * 4;
+            }
+
+            for (int j = 0; j < (decryptedText.Length - 2); j++)
+            {
+                string key = decryptedText.Substring(j, 3);
+                triDict.TryGetValue(key, out double prob);
+                tri += prob * 9;
+            }
+
+            for (int j = 0; j < (decryptedText.Length - 3); j++)
+            {
+                string key = decryptedText.Substring(j, 4);
+                quadDict.TryGetValue(key, out double prob);
+                quad += prob * 16;
+            }
+            for (int j = 0; j < (decryptedText.Length - 4); j++)
+            {
+                string key = decryptedText.Substring(j, 5);
+                pentaDict.TryGetValue(key, out double prob);
+                penta += prob * 25;
+            }
+
+
+            double dictStat = dictionaryStatisticFitness(decryptedText);
+
+            Console.WriteLine("uni: " + uni.ToString("F3") + " bi: " + bi.ToString("F3") +
+                " tri: " + tri.ToString("F3") + " quad: " + quad.ToString("F3") + " penta: " + penta.ToString("F3") + " dict: " + dictStat.ToString("F3"));
+            //return uni + bi + tri + quad + penta;
         }
 
         public static void Show(string decryptedText)
         {
             decryptedText = decryptedText.ToLower();
-            double langStat = languageStatisticFitness(decryptedText);
+            double uniStat = UniGramFitness(decryptedText);
+            double biStat = BiGramFitness(decryptedText);
+            double triStat = TriGramFitness(decryptedText);
+            //double quadStat = QuadGramFitness(decryptedText);
             double dictStat = dictionaryStatisticFitness(decryptedText);
-            //Console.WriteLine("lang: " + langStat+ " dict: " + +dictStat);
 
             double stat = 0.0;
-            if ((30 / langStat) < 1200.0)
-            {
-                stat = 30 / langStat;
-            }
-            else
-            {
-                stat = 30 / langStat /*+ dictStat*/;
-            }
-            Console.WriteLine("sum: " + stat + " lang: " + (30 / langStat) + " dict: " + dictStat);
+            double stat1 = 0.0;
+            stat = 30 / (uniStat + biStat + triStat) + dictStat;
+            stat1 = 30 / (uniStat + biStat + triStat);
+            Console.WriteLine("sum: " + stat + " lang: " + stat1 + " dict: " + dictStat);
         }
 
-        private static double languageStatisticFitness(string decryptedText)
+        private static double UniGramFitness(string decryptedText)
         {
             var statisticHelper = LanguageStatisticsHelper.GetLanguageStatistics();
             var cipherUD = statisticHelper.CreateUniGramStatistic(decryptedText);
-            var cipherBD = statisticHelper.CreateBiGramStatistic(decryptedText);
-            var cipherTD = statisticHelper.CreateTriGramStatistic(decryptedText);
             var nativUD = statisticHelper.UniGramDict;
-            var nativBD = statisticHelper.BiGramDict;
-            var nativTD = statisticHelper.TriGramDict;
 
             double uniGramProb = 0.0;
-            double biGramProb = 0.0;
-            double triGramProb = 0.0;
 
-            for (char c = 'a'; c <= 'z'; c++)
+            foreach(var pair in nativUD)
             {
-                double cNativ;
-                double cCipher;
-                nativUD.TryGetValue(c, out cNativ);
-                cipherUD.TryGetValue(c, out cCipher);
-
-                uniGramProb += Math.Pow(Math.Abs(cNativ - cCipher), 2);
-
-                //bigram 
-                for (char c1 = 'a'; c1 <= 'z'; c1++)
-                {
-                    double cNativA;
-                    double cCipherA;
-                    char[] blockC = { c, c1 };
-                    string blockS = new string(blockC);
-                    nativBD.TryGetValue(blockS, out cNativA);
-                    cipherBD.TryGetValue(blockS, out cCipherA);
-
-                    biGramProb += Math.Pow(Math.Abs(cNativA - cCipherA), 2);
-
-                    //trigram
-                    for (char c2 = 'a'; c2 <= 'z'; c2++)
-                    {
-                        double cNativB;
-                        double cCipherB;
-                        char[] blockD = { c, c1, c2 };
-                        string blockF = new string(blockD);
-                        nativTD.TryGetValue(blockF, out cNativB);
-                        cipherTD.TryGetValue(blockF, out cCipherB);
-
-                        triGramProb += Math.Pow(Math.Abs(cNativB - cCipherB), 2);
-                    }
-                }
+                cipherUD.TryGetValue(pair.Key, out double probCipher);
+                uniGramProb += Math.Pow(Math.Abs(pair.Value - probCipher), 2);
             }
-            return uniGramProb + biGramProb + triGramProb;
+
+            return uniGramProb;
         }
 
-        private static double dictionaryStatisticFitness(string decryptedText)
+        private static double BiGramFitness(string decryptedText)
+        {
+            var statisticHelper = LanguageStatisticsHelper.GetLanguageStatistics();
+            var cipherBD = statisticHelper.CreateBiGramStatistic(decryptedText);
+            var nativBD = statisticHelper.BiGramDict;
+
+            double biGramProb = 0.0;
+
+            foreach (var pair in nativBD)
+            {
+                cipherBD.TryGetValue(pair.Key, out double probCipher);
+                biGramProb += Math.Pow(Math.Abs(pair.Value - probCipher), 2);
+            }
+
+            return biGramProb;
+        }
+
+        private static double TriGramFitness(string decryptedText)
+        {
+            var statisticHelper = LanguageStatisticsHelper.GetLanguageStatistics();
+            var cipherTD = statisticHelper.CreateTriGramStatistic(decryptedText);
+            var nativTD = statisticHelper.TriGramDict;
+
+            double triGramProb = 0.0;
+
+            foreach (var pair in nativTD)
+            {
+                cipherTD.TryGetValue(pair.Key, out double probCipher);
+                triGramProb += Math.Pow(Math.Abs(pair.Value - probCipher), 2);
+            }
+
+            return triGramProb;
+        }
+
+        private static double QuadGramFitness(string decryptedText)
+        {
+            var statisticHelper = LanguageStatisticsHelper.GetLanguageStatistics();
+            var cipherQD = statisticHelper.CreateQuadGramStatistic(decryptedText);
+            var nativQD = statisticHelper.QuadGramDict;
+
+            double quadGramProb = 0.0;
+
+            foreach (var pair in nativQD)
+            {
+                cipherQD.TryGetValue(pair.Key, out double probCipher);
+                quadGramProb += Math.Pow(Math.Abs(pair.Value - probCipher), 2);
+            }
+
+            return quadGramProb;
+        }
+
+        public static double dictionaryStatisticFitness(string decryptedText)
         {
             double score = 0.0;
             double length = decryptedText.Length;

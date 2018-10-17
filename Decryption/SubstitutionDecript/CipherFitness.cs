@@ -91,7 +91,7 @@ namespace Decryption.SubstitutionDecript
             return uniGramProb + biGramProb + triGramProb;
         }
 
-        private static double dictionaryStatisticFitness(string decryptedText)
+        public static double dictionaryStatisticFitness(string decryptedText)
         {
             double score = 0.0;
             double length = decryptedText.Length;

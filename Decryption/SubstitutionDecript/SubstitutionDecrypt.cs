@@ -24,19 +24,19 @@ namespace Decryption.SubstitutionDecript
 
         public string DecryptText(string source)
         {
-            string decryptedText = "";
+            List<char> decryptedText = new List<char>();
             foreach (char c in source)
             {
                 if (Char.IsLetter(c))
                 {
-                    decryptedText += dictionary[c];
+                    decryptedText.Add(dictionary[c]);
                 }
                 else
                 {
-                    decryptedText += c;
+                    decryptedText.Add(c);
                 }
             }
-            return decryptedText;
+            return new string(decryptedText.ToArray());
         }
     }
 }

@@ -28,17 +28,17 @@ namespace Decryption.SubstitutionDecript
 
         public string DecryptText(string source)
         {
-            string decryptedText = "";
+            List<char> decryptedText = new List<char>(); 
             int i = 0;
             foreach (char c in source)
             {
                 if (Char.IsLetter(c))
                 {
-                    decryptedText += dictionary[i][c];
+                    decryptedText.Add(dictionary[i][c]);
                 }
                 else
                 {
-                    decryptedText += c;
+                    decryptedText.Add(c);
                 }
                 i++;
                 if(i == key.Count)
@@ -46,7 +46,7 @@ namespace Decryption.SubstitutionDecript
                     i = 0;
                 }
             }
-            return decryptedText;
+            return new string(decryptedText.ToArray());
         }
     }
 }

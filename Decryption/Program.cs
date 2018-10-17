@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Collections.Generic;
 using System.IO;
-using Decryption.Proto4Task;
+using Decryption.SubstitutionDecript;
 
 namespace Decryption
 {
@@ -41,12 +41,17 @@ namespace Decryption
 
             #region Task3
 
-            DictionaryNGrams.GetDictionaryNGrams();
+            //DictionaryNGrams.GetDictionaryNGrams();
             //Console.WriteLine("Press any key to start substitution decrypt");
             //Console.ReadKey();
+            CipherFitness4.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt").ToLower());
+            CipherFitness4.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text1.txt").ToLower());
+            CipherFitness4.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text2.txt").ToLower());
+            CipherFitness4.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text3.txt").ToLower());
+            CipherFitness4.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/bigtext.txt").ToLower());
 
-            //Thread thread1 = new Thread(Gh);
-            //thread1.Start();
+            Thread thread1 = new Thread(Gh);
+            thread1.Start();
             //Thread.Sleep(100);
             //Thread thread2 = new Thread(Gh);
             //thread2.Start();
@@ -55,7 +60,7 @@ namespace Decryption
             //thread3.Start();
             //Thread.Sleep(500);
 
-            //thread1.Join();
+            thread1.Join();
             //thread2.Join();
             //thread3.Join();
 
@@ -66,11 +71,11 @@ namespace Decryption
 
         public static void Gh()
         {
-            //string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/task3.txt").ToLower();
-            //Thread.Sleep(100);
-            //GeneticModel gm = new GeneticModel(encryptedText);
-            //string result3 = gm.Run();
-            //Console.WriteLine("\n======================\n\nSubstitution Decrypt:\n" + result3 + "\n\n======================\n");
+            string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt").ToLower();
+            Thread.Sleep(100);
+            GeneticModel gm = new GeneticModel(encryptedText);
+            string result3 = gm.Run();
+            Console.WriteLine("\n======================\n\nSubstitution Decrypt:\n" + result3 + "\n\n======================\n");
         }
 
         public static string ReadFromFile(string filepath)

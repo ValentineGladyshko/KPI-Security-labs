@@ -7,7 +7,7 @@ namespace Decryption.Proto4Task
 {
     class DictionaryNGrams
     {
-        private readonly int[] NGrams = {1, 2, 3, 4,5 ,6 };
+        private readonly int[] NGrams = { 1, 2, 3, 4, 5, 6 };
         private readonly char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
         private DictionaryNGrams()
         {
