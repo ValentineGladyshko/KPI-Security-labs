@@ -3,6 +3,7 @@ using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using Decryption.SubstitutionDecript;
+using Decryption.WordNinja;
 
 namespace Decryption
 {
@@ -41,29 +42,11 @@ namespace Decryption
 
             #region Task3
 
-            //DictionaryNGrams.GetDictionaryNGrams();
-            //Console.WriteLine("Press any key to start substitution decrypt");
-            //Console.ReadKey();
-            //CipherFitness.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt").ToLower());
-            //CipherFitness.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text1.txt").ToLower());
-            //CipherFitness.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text2.txt").ToLower());
-            //CipherFitness.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text3.txt").ToLower());
-            //CipherFitness.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/bigtext.txt").ToLower());
-
             Thread thread1 = new Thread(Gh);
             thread1.Start();
-            //Thread.Sleep(100);
-            //Thread thread2 = new Thread(Gh);
-            //thread2.Start();
-            //Thread.Sleep(100);
-            //Thread thread3 = new Thread(Gh);
-            //thread3.Start();
-            //Thread.Sleep(500);
 
             thread1.Join();
-            //thread2.Join();
-            //thread3.Join();
-
+            
             #endregion
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
@@ -80,7 +63,12 @@ namespace Decryption
             Thread.Sleep(100);
             GeneticModel gm = new GeneticModel(encryptedText);
             string result3 = gm.Run();
-            Console.WriteLine("\n======================\n\nSubstitution Decrypt:\n" + result3 + "\n\n======================\n");
+            List<string> output = Decryption.WordNinja.WordNinja.Split(result3);
+            foreach (var elem in output)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
         }
 
         public static string ReadFromFile(string filepath)

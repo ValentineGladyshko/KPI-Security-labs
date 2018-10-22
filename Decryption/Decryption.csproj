@@ -59,12 +59,15 @@
     <Compile Include="SubstitutionDecript\LanguageStatisticsHelper.cs" />
     <Compile Include="SubstitutionDecript\SubstitutionDecrypt.cs" />
     <Compile Include="VigenereDecrypt.cs" />
+    <Compile Include="WordNinja\WordNinja.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Proto4Task\Words Frequency.txt" />
+    <Content Include="WordNinja\wordninja_words.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

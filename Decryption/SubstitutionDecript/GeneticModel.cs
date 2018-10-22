@@ -40,7 +40,7 @@ namespace Decryption.SubstitutionDecript
 
         public string Run()
         {
-            currentGeneration = 0;
+            currentGeneration = 1;
             CreateFirstPopulation();
             double maxRate = 0.0;
             double sumRate = 0.0;
@@ -87,7 +87,7 @@ namespace Decryption.SubstitutionDecript
                     if (maxRate < gen.CalculateFitness())
                         maxRate = gen.CalculateFitness();
                 }
-                if (maxRate1 == maxRate)
+                if (maxRate1 + 0.1 > maxRate)
                 {
                     j++;
                 }
@@ -111,7 +111,7 @@ namespace Decryption.SubstitutionDecript
                 if (i == 100)
                 {
                     Console.Clear();
-                    return "Gen: " + population.First().Chromosome + "\n" +
+                    return /*"Gen: " + population.First().Chromosome + "\n" +*/
                         new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText);
                 }
             }

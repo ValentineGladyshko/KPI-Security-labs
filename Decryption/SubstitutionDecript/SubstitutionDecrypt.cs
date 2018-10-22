@@ -31,10 +31,10 @@ namespace Decryption.SubstitutionDecript
                 {
                     decryptedText.Add(dictionary[c]);
                 }
-                else
-                {
-                    decryptedText.Add(c);
-                }
+                //else
+                //{
+                //    decryptedText.Add(c);
+                //}
             }
             return new string(decryptedText.ToArray());
         }
