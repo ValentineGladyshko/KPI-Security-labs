@@ -71,11 +71,11 @@ namespace Decryption.SubstitutionDecript
             }
 
 
-           // double dictStat = dictionaryStatisticFitness(decryptedText);
+            //double dictStat = dictionaryStatisticFitness(decryptedText);
 
             //Console.WriteLine("uni: " + uni.ToString("F3") + " bi: " + bi.ToString("F3") +
             //    " tri: " + tri.ToString("F3") + " quad: " + quad.ToString("F3") + " penta: "+ penta.ToString("F3") + " dict: " + dictStat.ToString("F3"));
-            return uni + bi + tri + quad + penta;
+            return (uni + bi + tri + quad + penta) / decryptedText.Length * 1000 /*+ dictStat*/;
         }
 
         public static void NewEvaluateShow(string decryptedText)
@@ -130,9 +130,9 @@ namespace Decryption.SubstitutionDecript
 
 
             double dictStat = dictionaryStatisticFitness(decryptedText);
-
-            Console.WriteLine("uni: " + uni.ToString("F3") + " bi: " + bi.ToString("F3") +
-                " tri: " + tri.ToString("F3") + " quad: " + quad.ToString("F3") + " penta: " + penta.ToString("F3") + " dict: " + dictStat.ToString("F3"));
+             
+            Console.WriteLine("all: " + ((uni + bi + tri + quad + penta) / decryptedText.Length * 1000 + dictStat) + " uni: " + (uni / decryptedText.Length * 1000).ToString("F3") + " bi: " + (bi / decryptedText.Length * 1000).ToString("F3") +
+                " tri: " + (tri / decryptedText.Length * 1000).ToString("F3") + " quad: " + (quad / decryptedText.Length * 1000).ToString("F3") + " penta: " + (penta / decryptedText.Length * 1000).ToString("F3") + " dict: " + dictStat.ToString("F3"));
             //return uni + bi + tri + quad + penta;
         }
 

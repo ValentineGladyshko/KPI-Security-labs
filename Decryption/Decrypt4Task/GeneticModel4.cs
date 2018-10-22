@@ -14,11 +14,13 @@ namespace Decryption.SubstitutionDecript
         private string encryptedText;
         private SortedSet<Gen4> population;
         private int generationCount = 10000;
-        private int populationCount = 50;
+        private int populationCount = 100;
         private int keySize = 4;
         private double[] maxScore;
         private int mutationCount = 1;
-        private double percentageOfElitism = 10;
+        private double percentageOfElitism = 5;
+        private double percentageOfParents = 20;
+        private double percentageOfNonMutate = 40;
         private int currentGeneration;
 
         public GeneticModel4(string encryptedText)
@@ -40,7 +42,7 @@ namespace Decryption.SubstitutionDecript
             }
             return new string(key);
         }
-        //dejgnseprseranithribiljtmdntosjiilltilfltmdervrwadufoewfilemoshsedyithigaheaefnsceneegsttebrelerbtwanhaintrfetitefofileciorgnsunawenplyaddcithmathrrtlenomosdoncerdeawicounoputadserandoseciconyourhowsfrvarymoeanenohohnreanvdognnvooirevrskttfiluanhhllstavialetvldhtmeetaacwanhaivrhsehoectdcrtbnamownvutshairsitcrowoinfrgothttpdclattitawneyhaiconyoharsarsetjwnvutomeizhnsiacashenofrhytitleswingieinthlndcaocaallrqalqterdunchthsphstpanyoliabteidfjrmdoseeyhpzothtmhlqeltstmermlkslonecththrufeupoowerdebriscttfombanmidinslralwhsjgommniorwethsqtwantoedolcerdebtrepngfoliwapkrtseraniavaotethspnmfgmoulesdivbltheastrhdfwansbllhdpstfeaijcrsneetvtiheldcrsleswingpolisapobaoysaoovonunnsiiswhabhairsitcshluorchqhafryrtkenoqhauordkrenceispgticarrthoxeqahilosyeosteedicorendtideabserdsjusecicoocnemislneuideefshesiboat
+
         public string Run()
         {
             CreateFirstPopulation();
@@ -62,12 +64,12 @@ namespace Decryption.SubstitutionDecript
             for (int i = 0; i < generationCount; i++)
             {
                 
-                if (ss == 50)
+                if (ss == 20)
                 {
                     string decryptedText = new SubstitutionDecrypt4(population.First().Chromosome).DecryptText(encryptedText);
                     Console.WriteLine("\n===========\n" + decryptedText);
                     CipherFitness4.Show(decryptedText);
-                    CipherFitness4.NewEvaluateShow(decryptedText);
+                    //CipherFitness4.NewEvaluateShow(decryptedText);
                     Console.WriteLine("\n===========\n");
                     ss = 0;
                 }
@@ -181,6 +183,8 @@ namespace Decryption.SubstitutionDecript
             SortedSet<Gen4> newPopulation = new SortedSet<Gen4>();
             List<Gen4> populationArray = population.ToList();
             int elitismAmount = (int)Math.Ceiling(populationCount * (percentageOfElitism / 100.0));
+            int parentsAmount = (int)Math.Ceiling(populationCount * (percentageOfParents / 100.0));
+            int nonMutateAmount = (int)Math.Ceiling(populationCount * (percentageOfNonMutate / 100.0));
 
             int numberOfChildren = populationCount - elitismAmount;
             if (elitismAmount > 0)
@@ -190,28 +194,39 @@ namespace Decryption.SubstitutionDecript
                     newPopulation.Add(populationArray[i]);
                 }
             }
-            if (numberOfChildren > 0)
-            {
-                double sumRate = 0.0;
-                for (int i = 0; i < elitismAmount; i++)
-                {
-                    sumRate += populationArray[i].CalculateFitness();
-                }
-                List<int> index = new List<int>();
-                for (int i = 0; i < elitismAmount; i++)
-                {
-                    int count = (int)Math.Ceiling(Math.Pow(populationArray[i].CalculateFitness() / 100.0, 1.5));
-                    for (int j = 0; j < count; j++)
-                    {
-                        index.Add(i);
-                    }
-                }
 
-                while (newPopulation.Count < populationCount)
+            List<Gen4> children = new List<Gen4>();
+            for (int i = 0; i < nonMutateAmount; i++)
+            {
+
+                int pos1 = rand.Next(0, parentsAmount);
+                int pos2 = -1;
+                do
                 {
-                    newPopulation.Add(Mutate(populationArray[index[rand.Next(0, index.Count)]]));
+                    pos2 = rand.Next(0, parentsAmount);
                 }
+                while (pos1 == pos2);
+
+                Gen4 child = Gen4.Crossover(populationArray[pos1], populationArray[pos2]);
+                newPopulation.Add(child);
+
+                children.Add(child);
+
+
             }
+
+            while (newPopulation.Count < populationCount)
+            {
+                if (children.Count > 0)
+                {
+                    Gen4 gen = children[0];
+                    children.RemoveAt(0);
+                    newPopulation.Add(Gen4.Mutate(gen));
+                    continue;
+                }
+                newPopulation.Add(Mutate(populationArray[rand.Next(0, parentsAmount)]));
+            }
+
 
             population = newPopulation;
             currentGeneration++;

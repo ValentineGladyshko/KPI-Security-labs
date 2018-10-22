@@ -27,7 +27,7 @@ namespace Decryption.SubstitutionDecript
             List<char> decryptedText = new List<char>();
             foreach (char c in source)
             {
-                if (Char.IsLetter(c))
+                if (dictionary.ContainsKey(c))
                 {
                     decryptedText.Add(dictionary[c]);
                 }

@@ -44,11 +44,11 @@ namespace Decryption
             //DictionaryNGrams.GetDictionaryNGrams();
             //Console.WriteLine("Press any key to start substitution decrypt");
             //Console.ReadKey();
-            CipherFitness4.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt").ToLower());
-            CipherFitness4.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text1.txt").ToLower());
-            CipherFitness4.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text2.txt").ToLower());
-            CipherFitness4.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text3.txt").ToLower());
-            CipherFitness4.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/bigtext.txt").ToLower());
+            //CipherFitness.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt").ToLower());
+            //CipherFitness.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text1.txt").ToLower());
+            //CipherFitness.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text2.txt").ToLower());
+            //CipherFitness.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text3.txt").ToLower());
+            //CipherFitness.NewEvaluateShow(File.ReadAllText("../../../Decryption/SubstitutionDecript/bigtext.txt").ToLower());
 
             Thread thread1 = new Thread(Gh);
             thread1.Start();
@@ -72,6 +72,11 @@ namespace Decryption
         public static void Gh()
         {
             string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt").ToLower();
+
+            //string text = File.ReadAllText("../../../Decryption/SubstitutionDecript/bigtext.txt").ToLower();
+            //string encryptedText = new SubstitutionDecrypt(new GeneticModel("").GenerateRandomKey())
+            //    .DecryptText(text.Substring(0, text.Length / 200));
+
             Thread.Sleep(100);
             GeneticModel gm = new GeneticModel(encryptedText);
             string result3 = gm.Run();

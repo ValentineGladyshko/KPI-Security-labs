@@ -32,13 +32,6 @@ namespace Decryption.SubstitutionDecript
             this.encryptedText = encryptedText;
         }
 
-        public void Show()
-        {
-            SubstitutionDecrypt decriptor = new SubstitutionDecrypt(Chromosome);
-            string decryptedText = decriptor.DecryptText(encryptedText);
-            Console.WriteLine(CipherFitness4.NewEvaluate(decryptedText));
-        }
-
         public double CalculateFitness()
         {
             if (rate.HasValue)
@@ -47,7 +40,7 @@ namespace Decryption.SubstitutionDecript
             {
                 SubstitutionDecrypt decriptor = new SubstitutionDecrypt(Chromosome);
                 string decryptedText = decriptor.DecryptText(encryptedText);
-                rate = CipherFitness4.NewEvaluate(decryptedText);
+                rate = CipherFitness.NewEvaluate(decryptedText);
                 return rate.Value;
             }
             
