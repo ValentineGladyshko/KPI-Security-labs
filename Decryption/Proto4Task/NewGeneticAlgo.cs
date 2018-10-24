@@ -10,6 +10,7 @@ namespace Decryption.Proto4Task
     {
         public static readonly char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
         public static Random rand = new Random();
+
         public static string PolySubstitutionDecoder(string source, List<Dictionary<char, char>> dict)
         {
             List<char> decryptedText = new List<char>();
@@ -62,7 +63,7 @@ namespace Decryption.Proto4Task
 
         public static Dictionary<char, char> UpdateMappping(Dictionary<char, char> mapping, char key, char newValue)
         {
-            char valueKey= ' ';
+            char valueKey = ' ';
             foreach (var pair in mapping)
             {
                 if (newValue == pair.Value)
@@ -86,7 +87,7 @@ namespace Decryption.Proto4Task
             }
             foreach (var ch in set)
             {
-                List<T> tempList = new List<T>(list);           
+                List<T> tempList = new List<T>(list);
                 HashSet<T> tempSet = new HashSet<T>(set);
 
                 tempList.Add(ch);
@@ -121,10 +122,10 @@ namespace Decryption.Proto4Task
                 {
                     counter[source[j]]++;
                 }
-               
-                topSymbolsSource[i] = counter
+
+                topSymbolsSource.Add(counter
                     .OrderByDescending(pair => pair.Value).ToList()
-                    .GetRange(0, countTopSymbols).Select(pair => pair.Key).ToList();
+                    .GetRange(0, countTopSymbols).Select(pair => pair.Key).ToList());
             }
 
             List<List<Dictionary<char, char>>> population = new List<List<Dictionary<char, char>>>();
@@ -211,7 +212,12 @@ namespace Decryption.Proto4Task
 
                 for (int j = 0; j < keyLength; j++)
                 {
-                    foreach(var k in child[j].Keys)
+                    List<char> temp = new List<char>();
+                    foreach (var k in child[j].Keys)
+                    {
+                        temp.Add(k);
+                    }
+                    foreach (var k in temp)
                     {
                         UpdateMappping(child[j], k, (rand.Next(0, 2) == 0) ? x[j][k] : y[j][k]);
                     }
@@ -225,12 +231,12 @@ namespace Decryption.Proto4Task
 
         public static List<List<Dictionary<char, char>>> Mutate
             (List<List<Dictionary<char, char>>> dicts, int keyLength, double mutation = 0.25)
-        {           
-            for(int i=0;i< dicts.Count; i++)
+        {
+            for (int i = 0; i < dicts.Count; i++)
             {
-                for(int j=0;j< keyLength;j++)
+                for (int j = 0; j < keyLength; j++)
                 {
-                    while(rand.NextDouble() < mutation)
+                    while (rand.NextDouble() < mutation)
                     {
                         char index1 = alphabet[rand.Next(0, alphabet.Length)];
                         char index2 = alphabet[rand.Next(0, alphabet.Length)];
@@ -243,10 +249,104 @@ namespace Decryption.Proto4Task
             return dicts;
         }
 
-
-        public static void GeneticAlgo()
+        public static List<int> ArgSort(List<double> array)
         {
+            List<double> temp = new List<double>(array);
+            temp.Sort();
 
+            List<int> result = new List<int>();
+            for (int i = 0; i < temp.Count; i++)
+            {
+                result.Add(array.FindIndex(value => value == temp[i]));
+            }
+            return result;
+        }
+
+        public static void GeneticAlgo(string source, int countTopSymbols, int[] ngrams, Dictionary<string, double> dict,
+            int keyLength = 4, int patience = 30, double crossoverFraction = 0.75, int Iterations = 3000)
+        {
+            List<List<Dictionary<char, char>>> population = InitPopulation(source, countTopSymbols, keyLength);
+
+            double bestScore = -1;
+            List<Dictionary<char, char>> bestDict = new List<Dictionary<char, char>>();
+            int currPatience = patience;
+            int ngramIndex = 0;
+
+            while (Iterations > 0)
+            {
+                Console.WriteLine(Iterations + " - " + currPatience + " - " + bestScore);
+                //if ((bestDict.Count != 0) && (Iterations % 20 == 0))
+                //{
+                //    List<string> output = Decryption.WordNinja.WordNinja.Split(PolySubstitutionDecoder(source, bestDict));
+                //    foreach (var elem in output)
+                //    {
+                //        Console.Write(elem + " ");
+                //    }
+                //    Console.WriteLine();
+                //}
+
+                List<double> scores = new List<double>();
+                foreach (var x in population)
+                {
+                    scores.Add(PolySubstitutionScore(PolySubstitutionDecoder(source, x), ngrams, dict));
+                }
+
+                List<int> indexes = ArgSort(scores);
+
+                if (scores[indexes[indexes.Count - 1]] <= bestScore)
+                {
+                    if (currPatience == 0)
+                    {
+                        Console.WriteLine("Metric stopped improve!");
+                        if (ngramIndex < ngrams.Length)
+                        {
+                            ngramIndex++;
+                            bestScore = -1;
+                            currPatience = patience;
+                            continue;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        if (scores[indexes[scores.Count - 1]] == bestScore)
+                        {
+                            bestDict = population[indexes[indexes.Count - 1]];
+                        }
+
+                        currPatience--;
+                    }
+                }
+                else
+                {
+                    currPatience = patience;
+                }
+
+                bestScore = scores[indexes[indexes.Count - 1]];
+                bestDict = population[indexes[indexes.Count - 1]];
+
+                indexes = indexes.GetRange((int)Math.Ceiling(scores.Count * crossoverFraction),
+                    indexes.Count - (int)Math.Ceiling(scores.Count * crossoverFraction));
+
+                List<List<Dictionary<char, char>>> tempPopulation = new List<List<Dictionary<char, char>>>();
+                List<double> tempScores = new List<double>();
+                foreach (int i in indexes)
+                {
+                    tempPopulation.Add(population[i]);
+                    tempScores.Add(scores[i]);
+                }
+                population = Crossover(tempPopulation, tempScores, population.Count, keyLength);
+
+                population = Mutate(population, keyLength);
+                Iterations--;
+            }
+            Console.WriteLine("Best Decode: ");
+            List<string> output1 = Decryption.WordNinja.WordNinja.Split(PolySubstitutionDecoder(source, bestDict));
+            foreach (var elem in output1)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
         }
     }
 }

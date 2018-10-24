@@ -3,7 +3,7 @@ using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using Decryption.SubstitutionDecript;
-using Decryption.WordNinja;
+using Decryption.Proto4Task;
 
 namespace Decryption
 {
@@ -56,26 +56,25 @@ namespace Decryption
             //thread1.Start();
 
             //thread1.Join();
-
-            List<double> rty = new List<double>
-            {
-                0.1,
-                0.2,
-                0.3,
-                0.4,
-                0.5,
-                0.6,
-                0.7,
-                0.8,
-                0.9
-            };
-            Console.WriteLine(rty[rty.FindIndex(value => value >= 0.15)]);
-            Console.WriteLine(rty[rty.FindIndex(value => value >= 0.85)]);
-            Console.WriteLine(rty[rty.FindIndex(value => value >= 0.05)]);
-
+            int[] ngrams = { 2, 3, 4 };
+            var dict = DictionaryNGrams.GetDictionaryNGrams().Dictionary;
+            string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text5.txt").ToLower();
+            NewGeneticAlgo.GeneticAlgo(encryptedText, 6, ngrams, dict);
             #endregion
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
+        }
+        public static List<int> ArgSort(List<double> array)
+        {
+            List<double> temp = new List<double>(array);
+            temp.Sort();
+
+            List<int> result = new List<int>();
+            for (int i = 0; i < temp.Count; i++)
+            {
+                result.Add(array.FindIndex(value => value == temp[i]));
+            }
+            return result;
         }
 
         public static void Gh()
