@@ -67,7 +67,13 @@ namespace Decryption.SubstitutionDecript
                 if (ss == 20)
                 {
                     string decryptedText = new SubstitutionDecrypt4(population.First().Chromosome).DecryptText(encryptedText);
-                    Console.WriteLine("\n===========\n" + decryptedText);
+                    Console.WriteLine("\n===========");
+                    var output = Decryption.WordNinja.WordNinja.Split(new SubstitutionDecrypt4(population.First().Chromosome).DecryptText(encryptedText));
+                    foreach (var elem in output)
+                    {
+                        Console.Write(elem + " ");
+                    }
+                    Console.WriteLine();
                     CipherFitness4.Show(decryptedText);
                     //CipherFitness4.NewEvaluateShow(decryptedText);
                     Console.WriteLine("\n===========\n");

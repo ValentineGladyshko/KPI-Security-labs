@@ -52,12 +52,15 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proto4Task\DictionaryNGrams.cs" />
+    <Compile Include="Proto4Task\NewGeneticAlgo.cs" />
     <Compile Include="SubstitutionDecript\CipherFitness.cs" />
     <Compile Include="SubstitutionDecript\DictionaryStatisticsHelper.cs" />
     <Compile Include="SubstitutionDecript\Gen.cs" />
     <Compile Include="SubstitutionDecript\GeneticModel.cs" />
     <Compile Include="SubstitutionDecript\LanguageStatisticsHelper.cs" />
+    <Compile Include="SubstitutionDecript\NewDictionary.cs" />
     <Compile Include="SubstitutionDecript\SubstitutionDecrypt.cs" />
+    <Compile Include="Decrypt4Task\WordDictionary.cs" />
     <Compile Include="VigenereDecrypt.cs" />
     <Compile Include="WordNinja\WordNinja.cs" />
   </ItemGroup>

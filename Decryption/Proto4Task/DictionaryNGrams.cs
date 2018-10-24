@@ -11,7 +11,7 @@ namespace Decryption.Proto4Task
         private readonly char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
         private DictionaryNGrams()
         {
-            CreateDictionary();
+            LoadDictionary();
         }
         private static readonly DictionaryNGrams _dictionaryNGrams = new DictionaryNGrams();
 

@@ -42,11 +42,37 @@ namespace Decryption
 
             #region Task3
 
-            Thread thread1 = new Thread(Gh);
-            thread1.Start();
+            //string text = File.ReadAllText("../../../Decryption/SubstitutionDecript/bigtext.txt").ToLower();
+            //string encryptedText = new SubstitutionDecrypt("abcdefghijklmnopqrstuvwxyz")
+            //    .DecryptText(text.Substring(0, text.Length / 20));
 
-            thread1.Join();
-            
+            //Console.WriteLine(CipherFitness.NewEvaluate(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text.txt").ToLower()));
+            //Console.WriteLine(CipherFitness.NewEvaluate(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text1.txt").ToLower()));
+            //Console.WriteLine(CipherFitness.NewEvaluate(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text2.txt").ToLower()));
+            //Console.WriteLine(CipherFitness.NewEvaluate(File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text3.txt").ToLower()));
+            //Console.WriteLine(CipherFitness.NewEvaluate(encryptedText));
+
+            //Thread thread1 = new Thread(Gh);
+            //thread1.Start();
+
+            //thread1.Join();
+
+            List<double> rty = new List<double>
+            {
+                0.1,
+                0.2,
+                0.3,
+                0.4,
+                0.5,
+                0.6,
+                0.7,
+                0.8,
+                0.9
+            };
+            Console.WriteLine(rty[rty.FindIndex(value => value >= 0.15)]);
+            Console.WriteLine(rty[rty.FindIndex(value => value >= 0.85)]);
+            Console.WriteLine(rty[rty.FindIndex(value => value >= 0.05)]);
+
             #endregion
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();

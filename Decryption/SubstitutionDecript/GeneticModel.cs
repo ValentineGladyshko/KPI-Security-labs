@@ -13,7 +13,7 @@ namespace Decryption.SubstitutionDecript
         private readonly char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
         private string encryptedText;
         private SortedSet<Gen> population;
-        private int populationCount = 30;
+        private int populationCount = 10;
         private double probabilityOfMutation = 0.7;
         private int mutationCount = 1;
         private double percentageOfElitism = 10;
@@ -53,7 +53,12 @@ namespace Decryption.SubstitutionDecript
 
             double maxRate1 = maxRate;
             Console.Clear();
-            Console.WriteLine(new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText));
+            List<string> output = Decryption.WordNinja.WordNinja.Split(new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText));
+            foreach (var elem in output)
+            {
+                Console.Write(elem + " ");
+            }
+            //Console.WriteLine(new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText));
             Console.WriteLine("generation: " + currentGeneration + " max rate: " + maxRate +  " avg rate: " + 
                 (sumRate / populationCount) + " gen: " + population.First().Chromosome);
             int i = 0;
@@ -72,8 +77,12 @@ namespace Decryption.SubstitutionDecript
                 if (k == 20)
                 {
                     Console.Clear();
-                    Console.WriteLine(new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText));
-                    Console.WriteLine("generation: " + currentGeneration + " max rate: " + maxRate + " avg rate: " +
+                    output = Decryption.WordNinja.WordNinja.Split(new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText));
+                    foreach (var elem in output)
+                    {
+                        Console.Write(elem + " ");
+                    }
+                    Console.WriteLine("\ngeneration: " + currentGeneration + " max rate: " + maxRate + " avg rate: " +
                     (sumRate / populationCount) + " gen: " + population.First().Chromosome);
                     k = 0;
                 }
@@ -87,11 +96,11 @@ namespace Decryption.SubstitutionDecript
                     if (maxRate < gen.CalculateFitness())
                         maxRate = gen.CalculateFitness();
                 }
-                if (maxRate1 + 0.1 > maxRate)
-                {
-                    j++;
-                }
-                else j = 0;
+                //if (maxRate1 + 0.1 > maxRate)
+                //{
+                //    j++;
+                //}
+                //else j = 0;
 
                 maxRate1 = maxRate;
 
@@ -102,7 +111,7 @@ namespace Decryption.SubstitutionDecript
                 }
                 if (maxRate > 105)
                 {
-                    probabilityOfMutation = 0.25;
+                    probabilityOfMutation = 0.7;
                 }
                 //Console.Clear();
                 //Console.WriteLine(new SubstitutionDecrypt(population.First().Chromosome).DecryptText(encryptedText));

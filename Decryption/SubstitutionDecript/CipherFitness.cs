@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Decryption.Proto4Task;
 
 namespace Decryption.SubstitutionDecript
 {
@@ -8,7 +9,76 @@ namespace Decryption.SubstitutionDecript
     {
         private static readonly int[] NGrams = { 1, 2, 3, 4, 5, 6 };
 
+        public static double NewNew(string decryptedText)
+        {
+            double score = 0.0;
+            double length = decryptedText.Length;
+            var helper = DictionaryNGrams.GetDictionaryNGrams();
+            for (int i = 2; i < 5; i++)
+            {
+                for (int j = i; j < decryptedText.Length; j++)
+                {
+                    string word = decryptedText.Substring(j - i, i);
+                    helper.Dictionary.TryGetValue(word, out double value);
+                    score += value;
 
+                }
+            }
+
+            return 200 * score / length;
+        }
+        public static double New(string decryptedText)
+        {
+            double bi = 0.0;
+            double tri = 0.0;
+            double quad = 0.0;
+
+            var newDict = NewDictionary.GetNewDictionary();
+            var biDict = newDict.BiDict;
+            var triDict = newDict.TriDict;
+            var quadDict = newDict.QuadDict;
+
+            decryptedText = decryptedText.ToLower();
+            List<string> words = WordNinja.WordNinja.Split(decryptedText);
+
+            foreach (var word in words)
+            {
+                for (int j = 0; j < (word.Length - 1); j++)
+                {
+                    string key = word.Substring(j, 2);
+
+                    if (biDict.TryGetValue(key, out Dictionary<int, double> dict))
+                    {
+                        dict.TryGetValue(word.Length, out double value);
+                        bi += value;
+                    }
+                }
+
+                for (int j = 0; j < (word.Length - 2); j++)
+                {
+                    string key = word.Substring(j, 3);
+
+                    if (triDict.TryGetValue(key, out Dictionary<int, double> dict))
+                    {
+                        dict.TryGetValue(word.Length, out double value);
+                        tri += value;
+                    }
+                }
+
+                for (int j = 0; j < (word.Length - 3); j++)
+                {
+                    string key = word.Substring(j, 4);
+
+                    if (quadDict.TryGetValue(key, out Dictionary<int, double> dict))
+                    {
+                        dict.TryGetValue(word.Length, out double value);
+                        quad += value;
+                    }
+                }
+            }
+
+            return (bi + tri + quad) / decryptedText.Length * 100000;
+        }
         public static double NewEvaluate(string decryptedText)
         {
             decryptedText = decryptedText.ToLower();
