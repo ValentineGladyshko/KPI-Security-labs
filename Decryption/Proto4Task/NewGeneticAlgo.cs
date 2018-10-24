@@ -275,15 +275,15 @@ namespace Decryption.Proto4Task
             while (Iterations > 0)
             {
                 Console.WriteLine(Iterations + " - " + currPatience + " - " + bestScore);
-                //if ((bestDict.Count != 0) && (Iterations % 20 == 0))
-                //{
-                //    List<string> output = Decryption.WordNinja.WordNinja.Split(PolySubstitutionDecoder(source, bestDict));
-                //    foreach (var elem in output)
-                //    {
-                //        Console.Write(elem + " ");
-                //    }
-                //    Console.WriteLine();
-                //}
+                if ((bestDict.Count != 0) && (Iterations % 20 == 0))
+                {
+                    List<string> output = Decryption.WordNinja.WordNinja.Split(PolySubstitutionDecoder(source, bestDict));
+                    foreach (var elem in output)
+                    {
+                        Console.Write(elem + " ");
+                    }
+                    Console.WriteLine();
+                }
 
                 List<double> scores = new List<double>();
                 foreach (var x in population)
@@ -325,8 +325,8 @@ namespace Decryption.Proto4Task
                 bestScore = scores[indexes[indexes.Count - 1]];
                 bestDict = population[indexes[indexes.Count - 1]];
 
-                indexes = indexes.GetRange((int)Math.Ceiling(scores.Count * crossoverFraction),
-                    indexes.Count - (int)Math.Ceiling(scores.Count * crossoverFraction));
+                indexes = indexes.GetRange((int)Math.Round(scores.Count * crossoverFraction),
+                    indexes.Count - (int)Math.Round(scores.Count * crossoverFraction));
 
                 List<List<Dictionary<char, char>>> tempPopulation = new List<List<Dictionary<char, char>>>();
                 List<double> tempScores = new List<double>();
