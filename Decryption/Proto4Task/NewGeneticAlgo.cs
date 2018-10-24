@@ -175,12 +175,13 @@ namespace Decryption.Proto4Task
 
             double sum = 0;
             probas = probas.Select(w => sum += w).ToList();
-
+           
             List<List<Dictionary<char, char>>> population = new List<List<Dictionary<char, char>>>();
 
             for (int i = 0; i < populationSize; i++)
             {
-                int index = probas.FindIndex(value => value >= rand.NextDouble());
+                double r = rand.NextDouble();
+                int index = probas.FindIndex(value => value >= r);
                 if (index == -1)
                 {
                     index = probas.Count - 1;
@@ -192,7 +193,8 @@ namespace Decryption.Proto4Task
 
                 List<Dictionary<char, char>> x = dicts[index];
 
-                int index2 = probas.FindIndex(value => value >= rand.NextDouble());
+                r = rand.NextDouble();
+                int index2 = probas.FindIndex(value => value >= r);
                 if (index2 == -1)
                 {
                     index2 = probas.Count - 1;
@@ -263,10 +265,10 @@ namespace Decryption.Proto4Task
         }
 
         public static void GeneticAlgo(string source, int countTopSymbols, int[] ngrams, Dictionary<string, double> dict,
-            int keyLength = 4, int patience = 30, double crossoverFraction = 0.75, int Iterations = 3000)
+            int keyLength = 4, int patience = 20, double crossoverFraction = 0.75, int Iterations = 3000)
         {
             List<List<Dictionary<char, char>>> population = InitPopulation(source, countTopSymbols, keyLength);
-
+            Console.WriteLine(population.Count);
             double bestScore = -1;
             List<Dictionary<char, char>> bestDict = new List<Dictionary<char, char>>();
             int currPatience = patience;
@@ -274,6 +276,19 @@ namespace Decryption.Proto4Task
 
             while (Iterations > 0)
             {
+                if(ngramIndex>= ngrams.Length)
+                {
+                    Console.WriteLine("Best Decode: ");
+                    List<string> output2 = Decryption.WordNinja.WordNinja.Split(PolySubstitutionDecoder(source, bestDict));
+                    foreach (var elem in output2)
+                    {
+                        Console.Write(elem + " ");
+                    }
+                    Console.WriteLine();
+                    return;
+                }
+                int[] newNgrams = ngrams.ToList().GetRange(ngramIndex, 1).ToArray();
+                
                 Console.WriteLine(Iterations + " - " + currPatience + " - " + bestScore);
                 if ((bestDict.Count != 0) && (Iterations % 20 == 0))
                 {
@@ -288,7 +303,7 @@ namespace Decryption.Proto4Task
                 List<double> scores = new List<double>();
                 foreach (var x in population)
                 {
-                    scores.Add(PolySubstitutionScore(PolySubstitutionDecoder(source, x), ngrams, dict));
+                    scores.Add(PolySubstitutionScore(PolySubstitutionDecoder(source, x), newNgrams, dict));
                 }
 
                 List<int> indexes = ArgSort(scores);
@@ -335,6 +350,7 @@ namespace Decryption.Proto4Task
                     tempPopulation.Add(population[i]);
                     tempScores.Add(scores[i]);
                 }
+                
                 population = Crossover(tempPopulation, tempScores, population.Count, keyLength);
 
                 population = Mutate(population, keyLength);
