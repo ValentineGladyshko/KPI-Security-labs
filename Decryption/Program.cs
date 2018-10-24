@@ -58,10 +58,11 @@ namespace Decryption
             //thread1.Join();
             int[] ngrams = { 2, 3, 4 };
             var dict = DictionaryNGrams.GetDictionaryNGrams().Dictionary;
+            var words = WordDictionary.GetWordDictionary().Dictionary;
             string encryptedText = File.ReadAllText("../../../Decryption/SubstitutionDecript/training_text5.txt").ToLower();
 
             //Console.WriteLine(NewGeneticAlgo.PolySubstitutionScore(encryptedText, ngrams, dict));
-            NewGeneticAlgo.GeneticAlgo(encryptedText, 6, ngrams, dict);
+            NewGeneticAlgo.GeneticAlgo(encryptedText, 6, ngrams, dict, words);
             #endregion
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();

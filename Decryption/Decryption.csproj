@@ -60,7 +60,7 @@
     <Compile Include="SubstitutionDecript\LanguageStatisticsHelper.cs" />
     <Compile Include="SubstitutionDecript\NewDictionary.cs" />
     <Compile Include="SubstitutionDecript\SubstitutionDecrypt.cs" />
-    <Compile Include="Decrypt4Task\WordDictionary.cs" />
+    <Compile Include="Proto4Task\WordDictionary.cs" />
     <Compile Include="VigenereDecrypt.cs" />
     <Compile Include="WordNinja\WordNinja.cs" />
   </ItemGroup>
