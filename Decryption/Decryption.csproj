@@ -43,32 +43,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CeasarDecrypt.cs" />
-    <Compile Include="Decrypt4Task\CipherFitness4.cs" />
-    <Compile Include="Decrypt4Task\Gen4.cs" />
-    <Compile Include="Decrypt4Task\GeneticModel4.cs" />
-    <Compile Include="Decrypt4Task\SubstitutionDecrypt4.cs" />
-    <Compile Include="LetterCounter.cs" />
+    <Compile Include="CeasarVigenereDecrypt\CeasarDecrypt.cs" />
+    <Compile Include="CeasarVigenereDecrypt\LetterCounter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Proto4Task\DictionaryNGrams.cs" />
-    <Compile Include="Proto4Task\NewGeneticAlgo.cs" />
+    <Compile Include="PolySubstitutionDecrypt\DictionaryNGrams.cs" />
+    <Compile Include="PolySubstitutionDecrypt\NewGeneticAlgo.cs" />
     <Compile Include="SubstitutionDecript\CipherFitness.cs" />
-    <Compile Include="SubstitutionDecript\DictionaryStatisticsHelper.cs" />
     <Compile Include="SubstitutionDecript\Gen.cs" />
     <Compile Include="SubstitutionDecript\GeneticModel.cs" />
     <Compile Include="SubstitutionDecript\LanguageStatisticsHelper.cs" />
-    <Compile Include="SubstitutionDecript\NewDictionary.cs" />
     <Compile Include="SubstitutionDecript\SubstitutionDecrypt.cs" />
-    <Compile Include="Proto4Task\WordDictionary.cs" />
-    <Compile Include="VigenereDecrypt.cs" />
+    <Compile Include="PolySubstitutionDecrypt\WordDictionary.cs" />
+    <Compile Include="CeasarVigenereDecrypt\VigenereDecrypt.cs" />
     <Compile Include="WordNinja\WordNinja.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="SubstitutionDecript\ngrams\bigram.csv" />
+    <None Include="SubstitutionDecript\ngrams\pentagram1.csv" />
+    <None Include="SubstitutionDecript\ngrams\quadgram1.csv" />
+    <None Include="SubstitutionDecript\ngrams\trigram.csv" />
+    <None Include="SubstitutionDecript\ngrams\unigram.csv" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Proto4Task\Words Frequency.txt" />
+    <Content Include="PolySubstitutionDecrypt\DictionaryNGrams.txt" />
+    <Content Include="PolySubstitutionDecrypt\WordsFrequency.txt" />
+    <Content Include="SubstitutionDecript\dictionary\SmallWords.txt" />
+    <Content Include="SubstitutionDecript\dictionary\WordDictionary.txt" />
+    <Content Include="SubstitutionDecript\dictionary\Words.txt" />
+    <Content Include="SubstitutionDecript\dictionary\words_alpha.txt" />
+    <Content Include="SubstitutionDecript\tasks\bigtext.txt" />
+    <Content Include="SubstitutionDecript\tasks\task2.txt" />
+    <Content Include="SubstitutionDecript\tasks\task3.txt" />
+    <Content Include="SubstitutionDecript\tasks\task4.txt" />
+    <Content Include="SubstitutionDecript\tasks\task5.txt" />
     <Content Include="WordNinja\wordninja_words.txt" />
   </ItemGroup>
   <ItemGroup />

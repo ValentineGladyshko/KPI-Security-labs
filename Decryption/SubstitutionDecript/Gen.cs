@@ -40,7 +40,7 @@ namespace Decryption.SubstitutionDecript
             {
                 SubstitutionDecrypt decriptor = new SubstitutionDecrypt(Chromosome);
                 string decryptedText = decriptor.DecryptText(encryptedText);
-                rate = CipherFitness.NewNew(decryptedText);
+                rate = CipherFitness.NewEvaluate(decryptedText);
                 return rate.Value;
             }
             
