@@ -292,7 +292,7 @@ namespace Decryption.PolySubstitutionDecrypt
 
         public static string GeneticAlgo(string source, int countTopSymbols, int[] ngrams,
             Dictionary<string, double> dict, HashSet<string> words, HashSet<string> smallWords,
-            int keyLength = 4, int patience = 10, double crossoverFraction = 0.75, int Iterations = 3000)
+            int keyLength = 4, int patience = 20, double crossoverFraction = 0.75, int Iterations = 3000)
         {
             List<List<Dictionary<char, char>>> population = InitPopulation(source, countTopSymbols, keyLength);
             double bestScore = -1;
@@ -309,6 +309,36 @@ namespace Decryption.PolySubstitutionDecrypt
                     useWords = true;
                 }
 
+                if(bestScore > 9390)
+                {
+                    string result1 = string.Empty;
+                    result1 += "Result:\n\n";
+                    List<string> output2 = Decryption.WordNinja.WordNinja.Split(PolySubstitutionDecoder(source, bestDict));
+                    foreach (var elem in output2)
+                    {
+                        result1 += (elem + " ");
+                    }
+                    result1 += "\nDictionary:\n";
+
+                    for (int i = 0; i < bestDict.Count; i++)
+                    {
+                        result1 += ((i + 1) + " key:\n");
+                        foreach (var pair in bestDict[i])
+                        {
+                            result1 += (pair.Key + " ");
+                        }
+
+                        result1 += "\n";
+
+                        foreach (var pair in bestDict[i])
+                        {
+                            result1 += (pair.Value + " ");
+                        }
+                        result1 += "\n\n";
+                    }
+
+                    return result1;
+                }
                 Console.WriteLine(generation + " generation: patience - " + currPatience + " best score - " + bestScore);
                 if ((bestDict.Count != 0) && (Iterations % 20 == 0))
                 {
