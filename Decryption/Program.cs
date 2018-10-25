@@ -1,55 +1,46 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 using Decryption.SubstitutionDecript;
+using Decryption.PolySubstitutionDecrypt;
 
 namespace Decryption
 {
     class Program
     {
-        // To get task files uncomment intialization of task strings, WriteToFile("task1.txt", task1); and WriteToFile("task2.txt", task2);
+        #region To Do List
+        
         // To DO List:
 
-        // 1. Write effective algorithm to find text is normal or not
-        // (based on dictionary of common words and n-grams)
+        // 1. Maybe needed to refactor code
 
-        // 2. Maybe needed to refactor code
+        // 2. Decrypt string 6 by some way
 
-        // 3. Write a code to attack some simple substitution cipher. 
-        //To reduce the complexity of this one we will use only uppercase letters, so the keyspace is only 26! 
-        //To get this one right automatically you will probably need to use some sort of genetic algorithm (which worked the best last year),
-        //simulated annealing or gradient descent. Seriously, write it right now, you will need it to decipher the next one as well. 
-        //Bear in mind, therea??s no spaces.
-
-        // 4. Decrypt strings 4, 5, 6 by some way
-
-        // 5. Write genetic algorithm.
-        // For this we need:
-        //   a) the dictionary of n-grams (sequence of letters with length n) with frequency of coincidence for each n-gram
-        //   b) write function that will define fitness for individual algo
-        //   c) write function that will crossover 2 individuals 
-        //      (each individual defined by string of unique letters so we must reposition letters in some way)
-        //   d) and maybe something else :)))
+        #endregion
 
         static void Main(string[] args)
         {
 
-            #region Task1
-            //string task1 = @"]|d3gaj3r3avcvrgz}t>xvj3K\A3pzc{va=3V=t=3zg3`{|f.w3grxv3r3`gaz}t31{v..|3d|a.w13r" +
-            //    "}w?3tzev}3g{v3xvj3z`31xvj1?3k|a3g{v3uza`g3.vggva31{13dzg{31x1?3g{v}3k|a31v13dzg{31v1?3g{v}3" +
-            //    "1.13dzg{31j1?3r}w3g{v}3k|a3}vkg3p{ra31.13dzg{31x13rtrz}?3g{v}31|13dzg{31v13r}w3`|3|}=3J|f3~" +
-            //    "rj3f`v3z}wvk3|u3p|z}pzwv}pv?3[r~~z}t3wz`gr}pv?3Xr`z`xz3vkr~z}rgz|}?3`grgz`gzpr.3gv`g`3|a3d{" +
-            //    "rgveva3~vg{|w3j|f3uvv.3d|f.w3`{|d3g{v3qv`g3av`f.g=";
+            #region Task2
 
-            //WriteToFile("task1.txt", task1);
+            CeasarDecrypt ceasarDecrypt = new CeasarDecrypt
+                (File.ReadAllText("../../../Decryption/SubstitutionDecript/tasks/task2.txt"));
+            string result2 = ceasarDecrypt.Decrypt();
+            Console.WriteLine("Ceasar Decrypt:\n" + result2 + "\n");
 
+<<<<<<< HEAD
             CeasarDecrypt ceasarDecrypt = new CeasarDecrypt(ReadFromFile("task1.txt"));
             string result1 = ceasarDecrypt.Decrypt();
             WriteToFile("result1.txt", result1);
+=======
+>>>>>>> GeneticAlgoTesting
             #endregion
 
-            #region Task2
+            #region Task3
 
+<<<<<<< HEAD
             //string task2 = "1c41023f564b2a130824570e6b47046b521f3f5208201318245e0e6b40022643072e13183e51183f" +
             //    "5a1f3e4702245d4b285a1b23561965133f2413192e571e28564b3f5b0e6b50042643072e4b023f4a4b24554b3f5" +
             //    "b0238130425564b3c564b3c5a0727131e38564b245d0732131e3b430e39500a38564b27561f3f5619381f4b385c" +
@@ -81,9 +72,16 @@ namespace Decryption
             Console.WriteLine(decryptor2.Decrypt());
 
             Console.WriteLine("Press any key to continue...");
+=======
+            VigenereDecrypt vigenereDecrypt = new VigenereDecrypt(DecodeHexToUTF8
+                (File.ReadAllText("../../../Decryption/SubstitutionDecript/tasks/task3.txt")), null);
+            string result3 = vigenereDecrypt.Decrypt();
+            Console.WriteLine("Vigenere Decrypt:\n" + result3 + "\n");
+            Console.WriteLine("Press any key to start mono substitution decrypt");
+>>>>>>> GeneticAlgoTesting
             Console.ReadKey();
-        }
 
+<<<<<<< HEAD
         public static string ReadFromFile(string filepath)
         {
             string result = string.Empty;
@@ -96,21 +94,73 @@ namespace Decryption
                 }
             }
             catch (IOException e)
+=======
+            #endregion
+
+            #region Task4
+
+            Console.Clear();
+            Console.WriteLine("Initializing dictionaries...");
+
+            Stopwatch task4Stopwatch = new Stopwatch();
+            task4Stopwatch.Start();
+
+            string task4 = File.ReadAllText("../../../Decryption/SubstitutionDecript/tasks/task4.txt").ToLower();
+            
+            GeneticModel gm = new GeneticModel(task4);
+            string result4 = gm.Run();
+            task4Stopwatch.Stop();
+
+            Console.WriteLine("Result:\n");
+            List<string> output = Decryption.WordNinja.WordNinja.Split(result4);
+            foreach (var elem in output)
+>>>>>>> GeneticAlgoTesting
             {
-                Console.WriteLine(e.Message);
+                Console.Write(elem + " ");
             }
 
+<<<<<<< HEAD
             return result;
         }
+=======
+            Console.WriteLine("\n");
+            Console.WriteLine("Execution time: " + (task4Stopwatch.ElapsedMilliseconds / 1000.0).ToString("F3") + " seconds\n");
+            
+>>>>>>> GeneticAlgoTesting
 
-        public static void WriteToFile(string filepath, string result)
-        {
-            using (StreamWriter sw = new StreamWriter(filepath))
-            {
-                sw.Write(result);
-            }
+            Console.WriteLine("Press any key to start poly substitution decrypt");
+            Console.ReadKey();
+            #endregion
+
+            #region Task5
+
+            Console.Clear();
+            Console.WriteLine("Initializing dictionaries...");
+
+            Stopwatch task5Stopwatch = new Stopwatch();
+            task5Stopwatch.Start();
+
+            int[] ngrams = { 2, 3, 4 };
+            var dict = DictionaryNGrams.GetDictionaryNGrams().Dictionary;
+            var words = WordDictionary.GetWordDictionary().Dictionary;
+            var smallWords = WordDictionary.GetWordDictionary().SmallDictionary;
+            string task5 = File.ReadAllText("../../../Decryption/SubstitutionDecript/tasks/task5.txt").ToLower();
+
+            string result5 = NewGeneticAlgo.GeneticAlgo(task5, 6, ngrams, dict, words, smallWords);
+
+            task5Stopwatch.Stop();
+
+            Console.WriteLine(result5);
+
+            Console.WriteLine("Execution time: " + task5Stopwatch.Elapsed.Minutes + " minutes " + task5Stopwatch.Elapsed.Seconds + " seconds");
+            #endregion
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> GeneticAlgoTesting
 
         public static string DecodeHexToUTF8(string task)
         {
