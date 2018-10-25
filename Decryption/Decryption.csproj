@@ -47,27 +47,6 @@
     <Compile Include="CeasarVigenereDecrypt\LetterCounter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-<<<<<<< HEAD
-    <Compile Include="SimpleSubstitutionDecrypt.cs" />
-    <Compile Include="SubstitutionDecript\CipherFitness.cs" />
-    <Compile Include="SubstitutionDecript\DictionaryStatisticsHelper.cs" />
-    <Compile Include="SubstitutionDecript\LanguageStatisticsHelper.cs" />
-    <Compile Include="SubstitutonPolyALphDecryptor.cs" />
-    <Compile Include="VigenereDecrypt.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SubstitutionDecript\bigram.csv" />
-    <None Include="SubstitutionDecript\trigram.csv" />
-    <None Include="SubstitutionDecript\unigram.csv" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="SubstitutionDecript\english_bigrams.txt" />
-    <Content Include="SubstitutionDecript\english_quadgrams.txt" />
-    <Content Include="SubstitutionDecript\words.txt" />
-=======
     <Compile Include="PolySubstitutionDecrypt\DictionaryNGrams.cs" />
     <Compile Include="PolySubstitutionDecrypt\NewGeneticAlgo.cs" />
     <Compile Include="SubstitutionDecript\CipherFitness.cs" />
@@ -86,7 +65,6 @@
     <None Include="SubstitutionDecript\ngrams\quadgram1.csv" />
     <None Include="SubstitutionDecript\ngrams\trigram.csv" />
     <None Include="SubstitutionDecript\ngrams\unigram.csv" />
->>>>>>> GeneticAlgoTesting
   </ItemGroup>
   <ItemGroup>
     <Content Include="PolySubstitutionDecrypt\DictionaryNGrams.txt" />

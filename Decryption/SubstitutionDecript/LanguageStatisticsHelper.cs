@@ -34,39 +34,27 @@ namespace Decryption.SubstitutionDecript
 
         public IDictionary<char, double> LoadUniGramStatistic()
         {
-<<<<<<< HEAD
-            return File.ReadLines("../../../Decryption/SubstitutionDecript/unigram.csv")
-=======
             double sum = File.ReadLines("../../..//Decryption/SubstitutionDecript/ngrams/unigram.csv")
                 .Select(line => line.Split(';')).Sum(line => Convert.ToDouble(line[1]));
             return File.ReadLines("../../../Decryption/SubstitutionDecript/ngrams/unigram.csv")
->>>>>>> GeneticAlgoTesting
                 .Select(line => line.Split(';'))
                 .ToDictionary(line => Convert.ToChar(line[0]), line => Convert.ToDouble(line[1]) / sum);
         }
 
         public IDictionary<string, double> LoadBiGramStatistic()
         {
-<<<<<<< HEAD
-            return File.ReadLines("../../../Decryption/SubstitutionDecript/bigram.csv")
-=======
             double sum = File.ReadLines("../../..//Decryption/SubstitutionDecript/ngrams/bigram.csv")
                 .Select(line => line.Split(',')).Sum(line => Convert.ToDouble(line[1]));
             return File.ReadLines("../../../Decryption/SubstitutionDecript/ngrams/bigram.csv")
->>>>>>> GeneticAlgoTesting
                 .Select(line => line.Split(','))
                 .ToDictionary(line => line[0], line => Convert.ToDouble(line[1]) / sum);
         }
 
         public IDictionary<string, double> LoadTriGramStatistic()
         {
-<<<<<<< HEAD
-            return File.ReadLines("../../../Decryption/SubstitutionDecript/trigram.csv")
-=======
             double sum = File.ReadLines("../../..//Decryption/SubstitutionDecript/ngrams/trigram.csv")
                 .Select(line => line.Split(',')).Sum(line => Convert.ToDouble(line[1]));
             return File.ReadLines("../../../Decryption/SubstitutionDecript/ngrams/trigram.csv")
->>>>>>> GeneticAlgoTesting
                 .Select(line => line.Split(','))
                 .ToDictionary(line => line[0], line => Convert.ToDouble(line[1]) / sum);
         }
