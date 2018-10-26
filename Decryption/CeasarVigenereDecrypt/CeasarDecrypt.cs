@@ -1,4 +1,5 @@
 ﻿using System;
+using Decryption.SubstitutionDecript;
 
 namespace Decryption
 {
@@ -26,20 +27,7 @@ namespace Decryption
                     text += (char)(c ^ j);
                 }
 
-                int letterCount = 0;
-                int spaceCount = 0;
-
-                foreach (char c in text)
-                {
-                    if (Char.IsLetter(c) || c == '=')
-                        letterCount++;
-                    if (Char.IsWhiteSpace(c))
-                        spaceCount++;
-                }
-
-                if ((((double)letterCount / text.Length) > 0.7) 
-                    && (((double)spaceCount / text.Length) > 0.12) 
-                    && (((double)(letterCount + spaceCount) / text.Length) > 0.9))
+                if (CipherFitness.NewEvaluate(text) > 70)
                 {
                     result += "key: " + (char)j + "\nresult string:\n" + text;
                     break;

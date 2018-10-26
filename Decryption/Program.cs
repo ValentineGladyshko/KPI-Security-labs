@@ -22,6 +22,15 @@ namespace Decryption
 
         static void Main(string[] args)
         {
+            #region Init Dict
+
+            Console.WriteLine("Initializing dictionaries...");
+            LanguageStatisticsHelper.GetLanguageStatistics();
+            DictionaryNGrams.GetDictionaryNGrams();
+            WordDictionary.GetWordDictionary();
+            Console.Clear();
+
+            #endregion
 
             #region Task2
 

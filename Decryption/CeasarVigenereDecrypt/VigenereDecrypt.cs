@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Decryption
 {
@@ -15,7 +11,7 @@ namespace Decryption
         public VigenereDecrypt(string source, int? keyLength)
         {
             this.source = source;
-            this.keyLength = keyLength!=null? Convert.ToInt32(keyLength): FindKeyLength();
+            this.keyLength = keyLength != null ? Convert.ToInt32(keyLength) : FindKeyLength();
             key = new int[this.keyLength];
         }
 
@@ -59,21 +55,8 @@ namespace Decryption
                         result += Convert.ToChar(source[k + i] ^ j);
                     }
 
-                    int letterCount = 0;
-                    int spaceCount = 0;
-
-                    foreach (char c in result)
-                    {
-                        if (Char.IsLetter(c))
-                            letterCount++;
-                        if (Char.IsWhiteSpace(c))
-                            spaceCount++;
-                    }
-
-                    if ((((double)letterCount / result.Length) > 0.7)
-                        && (((double)spaceCount / result.Length) > 0.12)
-                        && (((double)(letterCount + spaceCount) / result.Length) > 0.95))
-                    {
+                    if (Evaluate(result) > 0)
+                    {                      
                         key[i] = j;
                         break;
                     }
@@ -98,6 +81,31 @@ namespace Decryption
             }
 
             return result;
+        }
+
+        public static double Evaluate(string text)
+        {
+            double score = 0.0;
+
+            foreach (char c in text)
+            {
+                if (!(char.IsLower(c) || char.IsDigit(c) || char.IsWhiteSpace(c)))
+                {
+                    score -= 2;
+                }
+
+                if (char.IsLower(c))
+                {
+                    score += 0.2;
+                }
+
+                if (char.IsWhiteSpace(c))
+                {
+                    score += 0.1;
+                }
+            }
+
+            return score;
         }
     }
 }
